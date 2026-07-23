@@ -87,14 +87,22 @@ export function outline(svgText, {size = 16, strokeWidth = 1.5, pad = 3} = {}) {
 }
 
 // Folder + glyph emblem: sample the folder, sample the glyph, shrink+shift the
-// glyph into the folder body, merge. glyph dots keep the folder's dot radius
-// (a touch bolder, which reads well as an emblem).
+// glyph into the folder body, merge. The glyph's stroke SCALES with the glyph
+// (grw = folder rw * glyphScale) so the emblem reads like a normal 1.5-stroke
+// Lucide icon at small size — not a chunky, disproportionately bold mark.
 export function composeFolder(folderSvg, glyphSvg, {
     size = 16, strokeWidth = 1.5, pad = 3,
     glyphScale = 0.42, gx = 12, gy = 13.6,
 } = {}) {
     const f = sample(folderSvg, strokeWidth);
     const g = sample(glyphSvg, strokeWidth);
-    const gd = g.dots.map(([x, y]) => [r2(gx + glyphScale * (x - 12)), r2(gy + glyphScale * (y - 12))]);
-    return emit([...f.dots, ...gd], f.fills, {size, pad, rw: f.rw});
+    const grw = r2(f.rw * glyphScale);
+    const circles =
+        f.dots.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="${f.rw}"/>`).join('') +
+        g.dots.map(([x, y]) =>
+            `<circle cx="${r2(gx + glyphScale * (x - 12))}" cy="${r2(gy + glyphScale * (y - 12))}" r="${grw}"/>`).join('');
+    const fills = f.fills.map(d => `<path d="${d}"/>`).join('');
+    const vb = `${-pad} ${-pad} ${24 + 2 * pad} ${24 + 2 * pad}`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" `
+        + `viewBox="${vb}" fill="currentColor" stroke="none">${fills}${circles}</svg>`;
 }
