@@ -29,9 +29,9 @@ if (!existsSync(VITALS)) {
     process.exit(0);
 }
 
-// slightly larger glyph than the system icons: Vitals icons sit alone next to
-// a number in the panel, so less padding reads better at 16px.
-const lucideOutline = n => outline(readFileSync(`${LUCIDE}/${n}.svg`, 'utf8'), {pad: 1.5});
+// Vitals icons sit in the panel/menu (small UI slots) — full-size glyph,
+// stroke 1.5, matching the system symbolic icons.
+const lucideOutline = n => outline(readFileSync(`${LUCIDE}/${n}.svg`, 'utf8'), {pad: 0, strokeWidth: 1.5});
 
 let patched = 0;
 for (const set of ['original', 'gnome']) {

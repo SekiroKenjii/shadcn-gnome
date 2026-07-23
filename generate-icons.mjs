@@ -97,11 +97,15 @@ writeFileSync(VENDORED, JSON.stringify(finalMap, null, 0));
 rmSync(OUT, {recursive: true, force: true});
 const svgCache = {};
 const readLucide = n => (svgCache[n] ??= readFileSync(`${LUCIDE_DIR}/${n}.svg`, 'utf8'));
-// symbolic outline cache (same lucide icon reused across many names)
+// symbolic outline cache (same lucide icon reused across many names).
+// Symbolic icons live in small UI slots (panel, quick settings, sidebars) —
+// use a slight NEGATIVE pad so the glyph fills a touch more of its box (a bit
+// bigger than default), stroke 1.5.
 const symCache = {};
-const outlineOf = n => (symCache[n] ??= outline(readLucide(n)));
-// plain: keep Lucide's real strokes, baked to the graphite fg (not recolored
-// by GTK, so it needs an explicit color that reads on the dark desktop).
+const outlineOf = n => (symCache[n] ??= outline(readLucide(n), {pad: -1, strokeWidth: 1.5}));
+// plain: keep Lucide's real strokes, baked to the graphite fg. These are the
+// LARGE icons (folders in Files, app-grid tiles, application icons) — pad them
+// in so they read smaller and lighter, stroke 1.5.
 const bake = s => s
     .replace(/\swidth="24"/, ' width="16"').replace(/\sheight="24"/, ' height="16"')
     .replace(/viewBox="0 0 24 24"/, 'viewBox="-3 -3 30 30"')   // pad -> smaller glyph
@@ -109,12 +113,20 @@ const bake = s => s
     .replace(/stroke="currentColor"/g, `stroke="${FG}"`)
     .replace(/fill="currentColor"/g, `fill="${FG}"`);
 
-let files = 0;
+// Only Lucide-ify SYSTEM app icons; third-party apps keep their own icon so
+// they stay recognizable (a generic Lucide for every app loses identity).
+const SYSTEM_APP = name =>
+    /^(org\.gnome\.|gnome-|application-x-|application-default|preferences-)/.test(name) ||
+    ['nautilus', 'yelp', 'ptyxis', 'gnome', 'system-file-manager', 'system-users',
+     'user-info', 'utilities-terminal'].includes(name);
+
+let files = 0, appsSkipped = 0;
 const dirsUsed = new Set();
 for (const [ctx, m] of Object.entries(finalMap)) {
     const dir = `${OUT}/scalable/${ctx}`;
     let any = false;
     for (const [name, lu] of Object.entries(m)) {
+        if (ctx === 'apps' && !SYSTEM_APP(name)) { appsSkipped++; continue; }
         let src;
         try { src = readLucide(lu); }
         catch { continue; }               // lucide file vanished (shouldn't)
@@ -148,6 +160,6 @@ mkdirSync(OUT, {recursive: true});
 writeFileSync(`${OUT}/index.theme`, index);
 
 console.log(`agent mappings applied: ${agentApplied}, invalid(dropped): ${agentInvalid}`);
-console.log(`contexts: ${dirList.length}, svg files: ${files}`);
+console.log(`contexts: ${dirList.length}, svg files: ${files}, non-system apps kept-own: ${appsSkipped}`);
 const total = Object.values(finalMap).reduce((a, m) => a + Object.keys(m).length, 0);
 console.log(`unique icon names covered: ${total}`);
