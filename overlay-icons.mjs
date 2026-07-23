@@ -44,6 +44,16 @@ export const APP_BRANDS = {
     mongodb: 'brand-mongodb', mysql: 'brand-mysql', 'mysql-workbench': 'brand-mysql',
     cloudflare: 'brand-cloudflare', 'cloudflare-warp': 'brand-cloudflare',
     'com.cloudflare.WarpCli': 'brand-cloudflare',
+    // the visible "Cloudflare One Client" launcher (WarpTaskbar) uses this name
+    'zero-trust-orange': 'brand-cloudflare',
+};
+
+// app icon-name -> a plain Tabler OUTLINE icon (not a brand). For utilitarian
+// apps with no logo: plugin-type apps get `plug`, Resources gets `dashboard`.
+export const APP_TABLER = {
+    fcitx: 'plug',          // all Fcitx5 apps share Icon=fcitx
+    calf: 'plug',           // Calf Plugin Pack
+    'net.nokyan.Resources': 'dashboard',
 };
 
 // Apps with no Tabler brand — hand-drawn Lucide-style marks in custom-icons/.
@@ -100,6 +110,17 @@ export function overlay({OUT, LUCIDE_DIR, TABLER_DIR, FG, dirsUsed}) {
     // Hand-drawn marks for brand-less apps (same pipeline + sizing as above).
     for (const [name, file] of Object.entries(CUSTOM_APPS)) {
         const p = `${HERE}/custom-icons/${file}.svg`;
+        if (!existsSync(p)) continue;
+        const src = readFileSync(p, 'utf8');
+        mkdirSync(AD, {recursive: true});
+        writeFileSync(`${AD}/${name}-symbolic.svg`, outline(src, {pad: 0}));
+        writeFileSync(`${AD}/${name}.svg`, bakeFill(outline(src, {pad: 3})));
+        apps++; dirsUsed.add('scalable/apps');
+    }
+
+    // plain Tabler outline icons for utilitarian/plugin apps (plug, dashboard...)
+    for (const [name, tab] of Object.entries(APP_TABLER)) {
+        const p = `${TABLER_DIR}/${tab}.svg`;
         if (!existsSync(p)) continue;
         const src = readFileSync(p, 'utf8');
         mkdirSync(AD, {recursive: true});
