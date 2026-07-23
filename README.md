@@ -62,6 +62,20 @@ algorithmic first pass (`prepass-icons.mjs`), then a multi-agent semantic pass
 with adversarial review. The theme inherits `Adwaita, hicolor` so the long tail
 stays monochrome (never the colorful Yaru set).
 
+**App icons keep their identity** (`overlay-icons.mjs`): Lucide has no brand
+logos, so popular apps (Firefox, VS Code, Chrome, Discord, Telegram, Spotify,
+Docker, …) are drawn from **Tabler Icons**' `brand-*` set — the same
+outline/stroke language as Lucide — so each app stays recognizable *in* the
+line style instead of collapsing to one generic glyph. Apps with no brand
+match keep their own icon. System (GNOME) apps use the plain Lucide mapping.
+
+**Folders are distinctive**: the XDG/special folders (Documents, Downloads,
+Music, Pictures, Videos, Templates, Public, Desktop, …) get a Lucide folder
+*variant* (folder-down, folder-code, folder-git, folder-clock, folder-search,
+folder-symlink) or a **folder composed with a small glyph emblem** (folder +
+music/image/clapperboard/file-text/…, via `composeFolder`), so folder types
+are recognizable at a glance while ordinary folders stay the plain folder.
+
 ## Regenerating / customizing
 
 ```sh

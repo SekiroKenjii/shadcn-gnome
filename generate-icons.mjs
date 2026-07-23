@@ -8,12 +8,14 @@ import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync}
 import {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {outline} from './lib-outline.mjs';
+import {overlay} from './overlay-icons.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ICONS = `${HERE}/build/icons`;
 const LUCIDE_DIR = existsSync(`${HERE}/node_modules/lucide-static/icons`)
     ? `${HERE}/node_modules/lucide-static/icons`
     : `${HERE}/.work/node_modules/lucide-static/icons`;
+const TABLER_DIR = `${HERE}/node_modules/@tabler/icons/icons/outline`;
 const OUT = `${HERE}/build/Lucide`;
 const FG = '#d9d9d9';                 // graphite foreground for plain icons
 const CTX_LABEL = {actions: 'Actions', status: 'Status', devices: 'Devices',
@@ -140,6 +142,14 @@ for (const [ctx, m] of Object.entries(finalMap)) {
     if (any) dirsUsed.add(`scalable/${ctx}`);
 }
 
+// 3b. overlay recognizable app icons (Tabler brands) + distinctive folder icons
+let overlayStats = {apps: 0, folders: 0};
+if (existsSync(TABLER_DIR)) {
+    overlayStats = overlay({OUT, LUCIDE_DIR, TABLER_DIR, FG, dirsUsed});
+} else {
+    console.warn('  @tabler/icons not installed — skipping brand app icons');
+}
+
 // 4. index.theme
 const dirList = [...dirsUsed].sort();
 const sections = dirList.map(d => {
@@ -161,5 +171,6 @@ writeFileSync(`${OUT}/index.theme`, index);
 
 console.log(`agent mappings applied: ${agentApplied}, invalid(dropped): ${agentInvalid}`);
 console.log(`contexts: ${dirList.length}, svg files: ${files}, non-system apps kept-own: ${appsSkipped}`);
+console.log(`overlay: ${overlayStats.apps} brand app icons, ${overlayStats.folders} folder icons`);
 const total = Object.values(finalMap).reduce((a, m) => a + Object.keys(m).length, 0);
 console.log(`unique icon names covered: ${total}`);
