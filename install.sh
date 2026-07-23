@@ -62,6 +62,13 @@ cp -r "$REPO/build/Lucide" "$HOME/.local/share/icons/Lucide"
 command -v gtk-update-icon-cache >/dev/null 2>&1 && \
   gtk-update-icon-cache -q -f -t "$HOME/.local/share/icons/Lucide" 2>/dev/null || true
 
+# --- 7b. patch the Vitals extension's bundled icons (it loads its own, not
+#         the icon theme) so it matches the system look --------------------
+if [ -d "$HOME/.local/share/gnome-shell/extensions/Vitals@CoreCoding.com" ]; then
+  log "patching Vitals extension icons"
+  node "$REPO/patch-vitals.mjs" || true
+fi
+
 # --- 8. apply settings -----------------------------------------------------
 log "applying settings"
 gsettings set org.gnome.desktop.interface font-name 'Geist 11'

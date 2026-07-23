@@ -104,6 +104,8 @@ const outlineOf = n => (symCache[n] ??= outline(readLucide(n)));
 // by GTK, so it needs an explicit color that reads on the dark desktop).
 const bake = s => s
     .replace(/\swidth="24"/, ' width="16"').replace(/\sheight="24"/, ' height="16"')
+    .replace(/viewBox="0 0 24 24"/, 'viewBox="-3 -3 30 30"')   // pad -> smaller glyph
+    .replace(/stroke-width="2"/g, 'stroke-width="1.5"')        // thinner
     .replace(/stroke="currentColor"/g, `stroke="${FG}"`)
     .replace(/fill="currentColor"/g, `fill="${FG}"`);
 

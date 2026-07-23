@@ -42,9 +42,9 @@ function toPath(name, a) {
 
 const r2 = n => Math.round(n * 100) / 100;
 
-export function outline(svgText, {size = 16, strokeWidth = 2} = {}) {
+export function outline(svgText, {size = 16, strokeWidth = 1.5, pad = 3} = {}) {
     const rw = strokeWidth / 2;                 // dot radius
-    const step = Math.max(0.5, rw * 0.8);       // dot spacing (< 2*rw so they merge)
+    const step = Math.max(0.4, rw * 0.7);       // dot spacing (< 2*rw so they merge)
     const dots = [];
     const fills = [];
 
@@ -77,6 +77,9 @@ export function outline(svgText, {size = 16, strokeWidth = 2} = {}) {
     const body =
         fills.map(d => `<path d="${d}"/>`).join('') +
         dots.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="${rw}"/>`).join('');
+    // pad the viewBox so the 24-unit glyph sits smaller inside its icon box
+    // (matches Adwaita symbolic weight better; less "bold/big").
+    const vb = `${-pad} ${-pad} ${24 + 2 * pad} ${24 + 2 * pad}`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" `
-        + `viewBox="0 0 24 24" fill="currentColor" stroke="none">${body}</svg>`;
+        + `viewBox="${vb}" fill="currentColor" stroke="none">${body}</svg>`;
 }

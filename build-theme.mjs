@@ -178,14 +178,37 @@ function shell(d) {
  * Palette: ${d.bg} bg, ${d.card} raised, ${d.secondary}/${d.accent} tiles,
  *          ${d.fg} text, ${d.primary} accent. Radius ${RADIUS}px.
  * ================================================================== */
+/* Graphite is monochrome: neutralize the accent (checked toggles, the split
+ * menu-button arrow, sliders, switches) so no Settings hue leaks through. */
+stage { -st-accent-color: ${d.primary}; -st-accent-fg-color: ${d.primaryFg}; }
+
 .popup-menu-content, .candidate-popup-content { background-color: ${d.card}; }
 .datemenu-popover { background-color: ${d.card}; }
 .quick-settings { background-color: ${d.card}; }
-.quick-toggle, .quick-settings .icon-button { background-color: ${d.secondary}; }
+.quick-toggle, .quick-settings .icon-button, .quick-slider .icon-button {
+  background-color: ${d.secondary}; color: ${d.fg}; }
 .quick-toggle:hover, .quick-settings .icon-button:hover { background-color: ${d.hover}; }
-.quick-toggle:focus, .quick-settings .icon-button:focus { background-color: ${d.hover}; }
-.quick-toggle:checked, .quick-toggle:checked:hover, .quick-toggle:checked:focus {
-  background-color: ${d.primary}; color: ${d.primaryFg}; }
+.quick-toggle:focus, .quick-settings .icon-button:focus {
+  background-color: ${d.hover}; box-shadow: none !important; }
+.quick-toggle:checked, .quick-toggle:checked:hover, .quick-toggle:checked:focus,
+.quick-toggle:checked:active {
+  background-color: ${d.primary}; color: ${d.primaryFg}; box-shadow: none !important; }
+/* split-toggle arrow — match Yaru's exact selectors so we win on specificity;
+   body + arrow now share one fill, no accent tint */
+.quick-toggle-has-menu .quick-toggle-menu-button {
+  background-color: ${d.secondary}; color: ${d.fg}; }
+.quick-toggle-has-menu .quick-toggle-menu-button:hover { background-color: ${d.hover}; }
+.quick-toggle-has-menu .quick-toggle-menu-button:focus {
+  background-color: ${d.hover}; box-shadow: none !important; }
+.quick-toggle-has-menu .quick-toggle-menu-button:checked,
+.quick-toggle-has-menu .quick-toggle-menu-button:checked:hover,
+.quick-toggle-has-menu .quick-toggle-menu-button:checked:focus,
+.quick-toggle-has-menu .quick-toggle-menu-button:checked:active {
+  background-color: ${d.primary}; color: ${d.primaryFg}; box-shadow: none !important; }
+/* one pill, split by a faint 1px divider (dark — reads on the gray fill) */
+.quick-toggle-has-menu .quick-toggle-separator,
+.quick-toggle-has-menu:checked .quick-toggle-separator {
+  background-color: rgba(0,0,0,0.22); width: 1px; }
 .quick-toggle-menu { background-color: ${d.popover}; }
 .slider { -barlevel-active-background-color: ${d.primary}; }
 .toggle-switch:checked { background-color: ${d.primary}; }
