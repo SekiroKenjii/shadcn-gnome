@@ -149,6 +149,22 @@ for (const [ctx, m] of Object.entries(GENERIC))
   for (const [name, lu] of Object.entries(m))
     if (!finalMap[ctx][name] && LU.has(lu)) finalMap[ctx][name] = lu;
 
+// 2a. forced remaps — win over agent + generic (deliberate icon choices).
+const OVERRIDE = {
+  apps: {
+    // the software "store" reads better as overlapping shapes than a shopfront
+    'org.gnome.Software': 'shapes',
+    'gnome-software': 'shapes',
+    'software-center': 'shapes',
+    'software-store': 'shapes',
+    softwarecenter: 'shapes',
+    ubuntusoftware: 'shapes',
+  },
+};
+for (const [ctx, m] of Object.entries(OVERRIDE))
+  for (const [name, lu] of Object.entries(m))
+    if (LU.has(lu)) finalMap[ctx][name] = lu;
+
 // 2b. persist the resolved mapping so the theme can be regenerated portably
 //     (vendored in the repo; the workflow/agent outputs are not needed to rebuild).
 writeFileSync(VENDORED, JSON.stringify(finalMap, null, 0));

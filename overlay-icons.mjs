@@ -6,7 +6,11 @@
 // Everything runs through the same stroke->fill pipeline so GTK recolors them
 // cleanly. Apps with no Tabler brand are left untouched (they keep their own).
 import {readFileSync, writeFileSync, mkdirSync, existsSync} from 'node:fs';
+import {dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {outline, composeFolder} from './lib-outline.mjs';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
 
 // app icon-name (as it appears in .desktop Icon=) -> Tabler brand file
 export const APP_BRANDS = {
@@ -38,6 +42,15 @@ export const APP_BRANDS = {
     'github-desktop': 'brand-github', gitlab: 'brand-gitlab',
     docker: 'brand-docker', 'docker-desktop': 'brand-docker',
     mongodb: 'brand-mongodb', mysql: 'brand-mysql', 'mysql-workbench': 'brand-mysql',
+    cloudflare: 'brand-cloudflare', 'cloudflare-warp': 'brand-cloudflare',
+    'com.cloudflare.WarpCli': 'brand-cloudflare',
+};
+
+// Apps with no Tabler brand — hand-drawn Lucide-style marks in custom-icons/.
+// (Icon= name as it appears in the .desktop -> file basename in custom-icons/)
+export const CUSTOM_APPS = {
+    'com.anthropic.Claude': 'claude', claude: 'claude',
+    'anthropic-claude': 'claude', 'claude-desktop': 'claude',
 };
 
 // freedesktop folder name -> a Lucide folder variant, or {glyph} to compose
@@ -70,7 +83,18 @@ export function overlay({OUT, LUCIDE_DIR, TABLER_DIR, FG, dirsUsed}) {
         const src = readFileSync(p, 'utf8');
         mkdirSync(AD, {recursive: true});
         writeFileSync(`${AD}/${name}-symbolic.svg`, outline(src, {pad: 0}));   // panel/dash
-        writeFileSync(`${AD}/${name}.svg`, bakeFill(outline(src, {pad: 1})));  // app grid
+        writeFileSync(`${AD}/${name}.svg`, bakeFill(outline(src, {pad: 3})));  // app grid (match system apps)
+        apps++; dirsUsed.add('scalable/apps');
+    }
+
+    // Hand-drawn marks for brand-less apps (same pipeline + sizing as above).
+    for (const [name, file] of Object.entries(CUSTOM_APPS)) {
+        const p = `${HERE}/custom-icons/${file}.svg`;
+        if (!existsSync(p)) continue;
+        const src = readFileSync(p, 'utf8');
+        mkdirSync(AD, {recursive: true});
+        writeFileSync(`${AD}/${name}-symbolic.svg`, outline(src, {pad: 0}));
+        writeFileSync(`${AD}/${name}.svg`, bakeFill(outline(src, {pad: 3})));
         apps++; dirsUsed.add('scalable/apps');
     }
 
