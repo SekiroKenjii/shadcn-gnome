@@ -51,6 +51,16 @@ export const APP_BRANDS = {
 export const CUSTOM_APPS = {
     'com.anthropic.Claude': 'claude', claude: 'claude',
     'anthropic-claude': 'claude', 'claude-desktop': 'claude',
+    // name-based Icon= (theme overrides directly)
+    'brave-browser': 'brave', 'com.brave.Browser': 'brave',
+    'nvidia-settings': 'nvidia',
+    'com.github.wwmm.easyeffects': 'easyeffects',
+    // path-based apps (snap): these NAMES are used by the .desktop overrides in
+    // ~/.local/share/applications that swap the absolute-path Icon= for a
+    // themable name — see patch-desktop-icons.sh.
+    'firmware-updater': 'firmware',
+    'desktop-security-center': 'security',
+    'snap-store': 'appcenter',
 };
 
 // freedesktop folder name -> a Lucide folder variant, or {glyph} to compose
