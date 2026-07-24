@@ -151,6 +151,12 @@
   },
 
   "overrides": {
+    "actions": {
+      "object-select": "check",
+      "selection-checked": "check",
+      "selection-mode": "check",
+      "edit-select-all": "list-checks"
+    },
     "apps": {
       "org.gnome.Software": "tool-case",
       "gnome-software": "tool-case",
