@@ -145,7 +145,9 @@ done
 
 # GNOME version advisory (theme targets 50+)
 if command -v gnome-shell >/dev/null; then
-  GV="$(gnome-shell --version 2>/dev/null | grep -oE '[0-9]+' | head -1)"
+  # `|| true`: head closing the pipe early can SIGPIPE the producers, which
+  # pipefail would turn into a fatal error for this command substitution.
+  GV="$(gnome-shell --version 2>/dev/null | grep -oE '[0-9]+' | head -1 || true)"
   [ -n "$GV" ] && [ "$GV" -lt 50 ] 2>/dev/null && \
     warn "GNOME Shell $GV detected; this theme targets 50+. It should still apply, but the Shell theme may differ."
 fi
@@ -189,12 +191,16 @@ install_shell_theme() {
   cat "$BUILD/shell/gnome-shell.css" >> "$dest/gnome-shell.css"
 
   # enable User Themes extension + point it at our theme (dconf schema lives in the ext)
-  local uuid="user-theme@gnome-shell-extensions.gcampax.github.com"
+  # Capture then match; a `cmd | grep -q` pipeline can false-negative under
+  # pipefail when grep exits early and the producer dies with SIGPIPE.
+  local uuid="user-theme@gnome-shell-extensions.gcampax.github.com" exts
   if command -v gnome-extensions >/dev/null; then
-    gnome-extensions list 2>/dev/null | grep -q "$uuid" || pm_install "$(pkg_for gnome-extensions)" >/dev/null 2>&1 || true
+    exts="$(gnome-extensions list 2>/dev/null || true)"
+    case "$exts" in *"$uuid"*) : ;; *) pm_install "$(pkg_for gnome-extensions)" >/dev/null 2>&1 || true ;; esac
     gnome-extensions enable "$uuid" 2>/dev/null || true
   fi
-  if gnome-extensions list 2>/dev/null | grep -q user-theme; then
+  exts="$(gnome-extensions list 2>/dev/null || true)"
+  if [[ "$exts" == *user-theme* ]]; then
     dconf write /org/gnome/shell/extensions/user-theme/name "''"
     dconf write /org/gnome/shell/extensions/user-theme/name "'$THEME_TITLE'"
   else
@@ -222,11 +228,12 @@ find_shell_base() {
 # best-effort: rebuild a base dir from the compiled gnome-shell gresource
 extract_shell_base_from_gresource() {
   command -v gresource >/dev/null || return 1
-  local lib res out="$REPO/build/_shell-base"
+  local lib res reslist out="$REPO/build/_shell-base"
   for lib in /usr/lib64/gnome-shell/libgnome-shell.so /usr/lib/gnome-shell/libgnome-shell.so \
              /usr/lib64/gnome-shell/libgnome-shell.so.0 /usr/lib/*/gnome-shell/libgnome-shell.so; do
     [ -f "$lib" ] || continue
-    gresource list "$lib" 2>/dev/null | grep -q '/org/gnome/shell/theme/' || continue
+    reslist="$(gresource list "$lib" 2>/dev/null || true)"   # capture, avoid SIGPIPE+pipefail
+    case "$reslist" in *"/org/gnome/shell/theme/"*) : ;; *) continue ;; esac
     rm -rf "$out"; mkdir -p "$out"
     while IFS= read -r res; do
       case "$res" in */theme/*) : ;; *) continue ;; esac
@@ -303,7 +310,10 @@ if [ "$DO_TERMINAL" = 1 ]; then
   log "installing Ptyxis palette '$LABEL'"
   PD="$HOME/.local/share/org.gnome.Ptyxis/palettes"; mkdir -p "$PD"
   cp "$BUILD/ptyxis/$LABEL.palette" "$PD/"
-  if gsettings list-schemas 2>/dev/null | grep -q org.gnome.Ptyxis; then
+  # Capture then match; `gsettings list-schemas | grep -q` can false-negative
+  # under pipefail (grep exits early, gsettings dies with SIGPIPE).
+  schemas="$(gsettings list-schemas 2>/dev/null || true)"
+  if [[ "$schemas" == *org.gnome.Ptyxis* ]]; then
     # gsettings serializes strings in SINGLE quotes; strip both quote kinds
     uuid="$(gsettings get org.gnome.Ptyxis default-profile-uuid 2>/dev/null | tr -d "\"'")"
     [ -n "$uuid" ] && dconf write "/org/gnome/Ptyxis/Profiles/$uuid/palette" "'$LABEL'"
@@ -359,7 +369,10 @@ if [ "$DO_FIREFOX" = 1 ]; then
     FF_BEGIN="// >>> shadcn-gnome firefox prefs"
     FF_END="// <<< shadcn-gnome firefox prefs"
     ff_count=0
+    # Profile roots: traditional (~/.mozilla), XDG-style (~/.config/mozilla, used
+    # by newer/patched builds), snap, and flatpak.
     for root in "$HOME/.mozilla/firefox" \
+                "${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox" \
                 "$HOME/snap/firefox/common/.mozilla/firefox" \
                 "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox"; do
       [ -d "$root" ] || continue

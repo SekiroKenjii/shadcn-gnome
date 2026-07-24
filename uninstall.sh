@@ -46,6 +46,7 @@ fi
 FF_BEGIN="// >>> shadcn-gnome firefox prefs"
 FF_END="// <<< shadcn-gnome firefox prefs"
 for root in "$HOME/.mozilla/firefox" \
+            "${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox" \
             "$HOME/snap/firefox/common/.mozilla/firefox" \
             "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox"; do
   [ -d "$root" ] || continue

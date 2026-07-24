@@ -65,15 +65,21 @@ pick_base() {
 }
 
 # build_ours <base-gresource> <fragment> <out-gresource>
+# Split into a worker so the tempdir is cleaned up exactly once, in every case.
+# A `trap ... RETURN` for cleanup would leak: it fires again on later function
+# returns and then trips `set -u` on the now out-of-scope $tmp.
 build_ours() {
-  local base="$1" frag="$2" out="$3"
+  local base="$1" frag="$2" out="$3" tmp rc
   command -v gresource >/dev/null || die "missing 'gresource' (glib2 / libglib2.0-bin)"
   command -v glib-compile-resources >/dev/null || die "missing 'glib-compile-resources' (glib2-devel / libgio-2.0-dev-bin)"
   [ -f "$frag" ] || die "css fragment not found: $frag"
-
-  local tmp; tmp="$(mktemp -d)"
-  trap 'rm -rf "$tmp"' RETURN
-
+  tmp="$(mktemp -d)"
+  _build_gresource "$base" "$frag" "$out" "$tmp"; rc=$?
+  rm -rf "$tmp"
+  return "$rc"
+}
+_build_gresource() {
+  local base="$1" frag="$2" out="$3" tmp="$4"
   local paths; paths="$(gresource list "$base" 2>/dev/null)" || return 1
   [ -n "$paths" ] || return 1
 
@@ -113,16 +119,25 @@ build_ours() {
 
 # validate <our-gresource> <base-gresource>
 validate() {
-  local our="$1" base="$2" cbase cour
+  local our="$1" base="$2" cbase cour list gdmcss
   [ -s "$our" ] || { warn "built gresource is empty"; return 1; }
   gresource list "$our" >/dev/null 2>&1 || { warn "built gresource is unreadable"; return 1; }
   cbase="$(gresource list "$base" 2>/dev/null | grep -c . || true)"
   cour="$(gresource list "$our" 2>/dev/null | grep -c . || true)"
   [ "$cour" = "$cbase" ] || { warn "resource count changed ($cbase -> $cour); aborting"; return 1; }
-  gresource list "$our" | grep -q '/org/gnome/shell/theme/gdm.css' \
-    || { warn "gdm.css missing from built gresource"; return 1; }
-  gresource extract "$our" /org/gnome/shell/theme/gdm.css 2>/dev/null | grep -q "shadcn-gdm:$THEME" \
-    || { warn "our marker missing from built gresource"; return 1; }
+  # Capture then match. A `producer | grep -q` pipeline can false-negative under
+  # set -o pipefail: grep exits on the first hit, the producer gets SIGPIPE, and
+  # pipefail then reports the whole pipeline as failed even though grep matched.
+  list="$(gresource list "$our" 2>/dev/null || true)"
+  case "$list" in
+    *"/org/gnome/shell/theme/gdm.css"*) : ;;
+    *) warn "gdm.css missing from built gresource"; return 1 ;;
+  esac
+  gdmcss="$(gresource extract "$our" /org/gnome/shell/theme/gdm.css 2>/dev/null || true)"
+  case "$gdmcss" in
+    *"shadcn-gdm:$THEME"*) : ;;
+    *) warn "our marker missing from built gresource"; return 1 ;;
+  esac
   return 0
 }
 
