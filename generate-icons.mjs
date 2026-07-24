@@ -152,13 +152,13 @@ for (const [ctx, m] of Object.entries(GENERIC))
 // 2a. forced remaps — win over agent + generic (deliberate icon choices).
 const OVERRIDE = {
   apps: {
-    // the software "store" reads better as overlapping shapes than a shopfront
-    'org.gnome.Software': 'shapes',
-    'gnome-software': 'shapes',
-    'software-center': 'shapes',
-    'software-store': 'shapes',
-    softwarecenter: 'shapes',
-    ubuntusoftware: 'shapes',
+    // the software "store" reads better as overlapping tool-case than a shopfront
+    'org.gnome.Software': 'tool-case',
+    'gnome-software': 'tool-case',
+    'software-center': 'tool-case',
+    'software-store': 'tool-case',
+    softwarecenter: 'tool-case',
+    ubuntusoftware: 'tool-case',
   },
 };
 for (const [ctx, m] of Object.entries(OVERRIDE))

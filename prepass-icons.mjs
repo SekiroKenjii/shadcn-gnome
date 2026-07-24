@@ -116,7 +116,7 @@ const EXACT = {
   'process-stop': 'circle-x', 'process-working': 'loader', 'action-unavailable': 'ban',
   'accessories-calculator': 'calculator', 'accessories-text-editor': 'file-pen',
   'accessories-dictionary': 'book-a', 'accessories-character-map': 'type',
-  'accessories-screenshot': 'camera', 'utilities-terminal': 'square-terminal',
+  'accessories-screenshot': 'camera', 'utilities-terminal': 'terminal',
   'utilities-system-monitor': 'activity', 'applications-system': 'cog',
   'applications-internet': 'globe', 'applications-multimedia': 'clapperboard',
   'applications-graphics': 'image', 'applications-development': 'code',
