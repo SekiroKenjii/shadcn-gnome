@@ -1,12 +1,10 @@
-// prepass-icons.mjs — algorithmic first-pass mapping freedesktop icon names to
+// prepass-icons.mjs: algorithmic first-pass mapping freedesktop icon names to
 // Lucide, producing per-context chunk files (name + suggestion + confidence)
 // for the workflow agents to refine, plus lucide-list.txt.
 import {readFileSync, writeFileSync, mkdirSync, rmSync} from 'node:fs';
-import {dirname} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import {PATHS} from '../lib/config.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const wl = JSON.parse(readFileSync(`${HERE}/build/icons/worklist.json`, 'utf8'));
+const wl = JSON.parse(readFileSync(`${PATHS.build}/icons/worklist.json`, 'utf8'));
 const LU = new Set(wl.lucide);
 const has = n => LU.has(n);
 
@@ -199,11 +197,11 @@ function suggest(name, ctx) {
 }
 
 // ---- build chunks --------------------------------------------------------
-rmSync(`${HERE}/build/icons/chunks`, {recursive: true, force: true});
-rmSync(`${HERE}/build/icons/out`, {recursive: true, force: true});
-mkdirSync(`${HERE}/build/icons/chunks`, {recursive: true});
-mkdirSync(`${HERE}/build/icons/out`, {recursive: true});
-writeFileSync(`${HERE}/build/icons/lucide-list.txt`, wl.lucide.join('\n'));
+rmSync(`${PATHS.build}/icons/chunks`, {recursive: true, force: true});
+rmSync(`${PATHS.build}/icons/out`, {recursive: true, force: true});
+mkdirSync(`${PATHS.build}/icons/chunks`, {recursive: true});
+mkdirSync(`${PATHS.build}/icons/out`, {recursive: true});
+writeFileSync(`${PATHS.build}/icons/lucide-list.txt`, wl.lucide.join('\n'));
 
 const CHUNK = 100;
 const manifest = [];
@@ -217,11 +215,11 @@ for (const ctx of Object.keys(wl.contexts)) {
       return {name, suggest: s.lucide, confidence: s.conf};
     });
     const id = `${ctx}-${i / CHUNK}`;
-    writeFileSync(`${HERE}/build/icons/chunks/${id}.json`,
+    writeFileSync(`${PATHS.build}/icons/chunks/${id}.json`,
       JSON.stringify({context: ctx, icons: slice}, null, 1));
     manifest.push({id, context: ctx, count: slice.length});
   }
 }
-writeFileSync(`${HERE}/build/icons/manifest.json`, JSON.stringify(manifest, null, 1));
+writeFileSync(`${PATHS.build}/icons/manifest.json`, JSON.stringify(manifest, null, 1));
 console.log('chunks:', manifest.length, 'confidence:', JSON.stringify(stats));
 console.log(manifest.map(m => `${m.id}(${m.count})`).join(' '));

@@ -1,10 +1,30 @@
 {
-  "name": "shadcn-lucide-theme",
+  "name": "shadcn-gnome",
   "version": "1.0.0",
-  "description": "A shadcn-style GNOME theme (Graphite) with a full Lucide icon set",
+  "description": "shadcn-style GNOME desktop themes (Graphite, Mono, Vercel) with a full Lucide icon set, Geist font, terminal and GDM theming",
   "private": true,
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node lib/build-theme.mjs",
+    "build:icons": "node lib/generate-icons.mjs",
+    "enumerate": "node scripts/enumerate-icons.mjs",
+    "prepass": "node scripts/prepass-icons.mjs",
+    "assets": "bash scripts/download-assets.sh"
+  },
+  "keywords": [
+    "gnome",
+    "theme",
+    "shadcn",
+    "lucide",
+    "icons",
+    "gtk",
+    "libadwaita",
+    "geist"
+  ],
   "dependencies": {
     "@tabler/icons": "3.34.0",
     "lucide-static": "1.25.0",

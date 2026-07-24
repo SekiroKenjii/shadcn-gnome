@@ -1,0 +1,207 @@
+{
+  "_comment": "Static icon-mapping resources, kept out of the build scripts so they can be edited without touching code. appBrands/appTabler/customApps/folderIcons drive lib/overlay-icons.mjs; generic/overrides/systemApps drive lib/generate-icons.mjs; vitals drives lib/patch-vitals.mjs; desktopOverrides drives scripts/patch-desktop-icons.sh.",
+
+  "appBrands": {
+    "firefox": "brand-firefox",
+    "firefox-esr": "brand-firefox",
+    "org.mozilla.firefox": "brand-firefox",
+    "firefox_firefox": "brand-firefox",
+    "google-chrome": "brand-chrome",
+    "google-chrome-stable": "brand-chrome",
+    "chromium": "brand-chrome",
+    "chromium-browser": "brand-chrome",
+    "org.chromium.Chromium": "brand-chrome",
+    "microsoft-edge": "brand-edge",
+    "microsoft-edge-dev": "brand-edge",
+    "opera": "brand-opera",
+    "com.opera.Opera": "brand-opera",
+    "code": "brand-vscode",
+    "code-oss": "brand-vscode",
+    "vscode": "brand-vscode",
+    "com.visualstudio.code": "brand-vscode",
+    "visual-studio-code": "brand-vscode",
+    "code_code": "brand-vscode",
+    "discord": "brand-discord",
+    "com.discordapp.Discord": "brand-discord",
+    "telegram": "brand-telegram",
+    "telegram-desktop": "brand-telegram",
+    "org.telegram.desktop": "brand-telegram",
+    "slack": "brand-slack",
+    "com.slack.Slack": "brand-slack",
+    "signal-desktop": "brand-signal",
+    "org.signal.Signal": "brand-signal",
+    "whatsapp": "brand-whatsapp",
+    "whatsapp-for-linux": "brand-whatsapp",
+    "spotify": "brand-spotify",
+    "com.spotify.Client": "brand-spotify",
+    "vlc": "brand-vlc",
+    "org.videolan.VLC": "brand-vlc",
+    "steam": "brand-steam",
+    "com.valvesoftware.Steam": "brand-steam",
+    "Zoom": "brand-zoom",
+    "zoom": "brand-zoom",
+    "us.zoom.Zoom": "brand-zoom",
+    "teams": "brand-teams",
+    "teams-for-linux": "brand-teams",
+    "skypeforlinux": "brand-skype",
+    "com.skype.Client": "brand-skype",
+    "notion": "brand-notion",
+    "notion-app": "brand-notion",
+    "figma-linux": "brand-figma",
+    "figma": "brand-figma",
+    "blender": "brand-blender",
+    "org.blender.Blender": "brand-blender",
+    "github-desktop": "brand-github",
+    "gitlab": "brand-gitlab",
+    "docker": "brand-docker",
+    "docker-desktop": "brand-docker",
+    "mongodb": "brand-mongodb",
+    "mysql": "brand-mysql",
+    "mysql-workbench": "brand-mysql",
+    "cloudflare": "brand-cloudflare",
+    "cloudflare-warp": "brand-cloudflare",
+    "com.cloudflare.WarpCli": "brand-cloudflare",
+    "zero-trust-orange": "brand-cloudflare"
+  },
+
+  "appTabler": {
+    "fcitx": "plug",
+    "calf": "plug",
+    "net.nokyan.Resources": "dashboard"
+  },
+
+  "customApps": {
+    "com.anthropic.Claude": "claude",
+    "claude": "claude",
+    "anthropic-claude": "claude",
+    "claude-desktop": "claude",
+    "brave-browser": "brave",
+    "com.brave.Browser": "brave",
+    "nvidia-settings": "nvidia",
+    "com.github.wwmm.easyeffects": "easyeffects",
+    "firmware-updater": "firmware",
+    "desktop-security-center": "security",
+    "snap-store": "appcenter"
+  },
+
+  "folderIcons": {
+    "folder-documents": { "glyph": "file-text" },
+    "folder-download": { "variant": "folder-down" },
+    "folder-downloads": { "variant": "folder-down" },
+    "folder-music": { "glyph": "music" },
+    "folder-pictures": { "glyph": "image" },
+    "folder-videos": { "glyph": "clapperboard" },
+    "folder-templates": { "glyph": "layout-template" },
+    "folder-publicshare": { "glyph": "share-2" },
+    "user-desktop": { "glyph": "monitor" },
+    "folder-remote": { "variant": "folder-symlink" },
+    "folder-recent": { "variant": "folder-clock" },
+    "folder-saved-search": { "variant": "folder-search" },
+    "folder-git": { "variant": "folder-git" },
+    "user-bookmarks": { "variant": "folder-bookmark" }
+  },
+
+  "generic": {
+    "mimetypes": {
+      "application-x-executable": "square-chevron-right",
+      "application-x-generic": "file",
+      "text-x-generic": "file-text",
+      "image-x-generic": "file-image",
+      "audio-x-generic": "file-audio",
+      "video-x-generic": "file-video",
+      "package-x-generic": "package",
+      "font-x-generic": "type",
+      "application-octet-stream": "file",
+      "unknown": "file-question",
+      "gtk-file": "file",
+      "application-x-archive": "file-archive",
+      "application-pdf": "file-text"
+    },
+    "places": {
+      "folder": "folder",
+      "inode-directory": "folder",
+      "folder-remote": "folder-symlink",
+      "user-home": "house",
+      "user-desktop": "monitor",
+      "user-trash": "trash-2",
+      "network-server": "server",
+      "network-workgroup": "network",
+      "start-here": "house"
+    },
+    "devices": {
+      "drive-harddisk": "hard-drive",
+      "drive-removable-media": "usb",
+      "computer": "monitor",
+      "media-optical": "disc",
+      "input-keyboard": "keyboard",
+      "input-mouse": "mouse"
+    },
+    "apps": {
+      "application-default-icon": "app-window",
+      "application-x-executable": "square-chevron-right"
+    },
+    "status": {
+      "image-missing": "image-off",
+      "image-loading": "loader",
+      "dialog-error": "circle-x"
+    },
+    "actions": {
+      "gtk-missing-image": "image-off"
+    }
+  },
+
+  "overrides": {
+    "apps": {
+      "org.gnome.Software": "tool-case",
+      "gnome-software": "tool-case",
+      "software-center": "tool-case",
+      "software-store": "tool-case",
+      "softwarecenter": "tool-case",
+      "ubuntusoftware": "tool-case"
+    }
+  },
+
+  "systemAppPrefixes": [
+    "org.gnome.",
+    "gnome-",
+    "application-x-",
+    "application-default",
+    "preferences-"
+  ],
+
+  "systemApps": [
+    "nautilus",
+    "yelp",
+    "ptyxis",
+    "gnome",
+    "system-file-manager",
+    "system-users",
+    "user-info",
+    "utilities-terminal"
+  ],
+
+  "vitals": {
+    "battery": "battery",
+    "cpu": "cpu",
+    "fan": "fan",
+    "gpu": "gpu",
+    "memory": "memory-stick",
+    "network": "arrow-up-down",
+    "network-download": "download",
+    "network-upload": "upload",
+    "storage": "hard-drive",
+    "system": "gauge",
+    "temperature": "thermometer",
+    "voltage": "zap"
+  },
+
+  "desktopOverrides": {
+    "firmware-updater_firmware-updater": "firmware-updater",
+    "firmware-updater_firmware-updater-app": "firmware-updater",
+    "desktop-security-center_desktop-security-center": "desktop-security-center",
+    "snap-store_snap-store": "snap-store",
+    "snap-store_show-updates": "snap-store",
+    "snap-store_packagekit-session-installer": "snap-store",
+    "snapd-desktop-integration_snapd-desktop-integration": "snap-store"
+  }
+}

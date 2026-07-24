@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Fetch Geist fonts (variable TTF, Google Fonts) and lucide-static via npm.
+# Dev helper: refresh the vendored Geist fonts (variable TTF, Google Fonts) in
+# assets/fonts, and sanity-check lucide-static via npm. Not needed for install.
 set -uo pipefail
-BUILD="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-FONTS="$BUILD/fonts"
-WORK="$BUILD/.work"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+FONTS="$REPO/assets/fonts"
+WORK="$REPO/.work"
 mkdir -p "$FONTS" "$WORK"
 
 echo ">>> Geist fonts"

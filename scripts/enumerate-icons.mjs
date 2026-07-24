@@ -1,12 +1,11 @@
-// enumerate-icons.mjs — collect every icon name the system requests, grouped
+// enumerate-icons.mjs: collect every icon name the system requests, grouped
 // by freedesktop context, plus the Lucide inventory. Emits build/icons/worklist.json.
-import {readdirSync, readFileSync, mkdirSync, writeFileSync, existsSync, statSync} from 'node:fs';
-import {dirname, join, basename} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import {readdirSync, readFileSync, mkdirSync, writeFileSync, statSync} from 'node:fs';
+import {join, basename} from 'node:path';
+import {PATHS, lucideDir} from '../lib/config.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
 const HOME = process.env.HOME;
-const LUCIDE = `${HERE}/.work/node_modules/lucide-static/icons`;
+const LUCIDE = lucideDir();
 
 const THEMES = [`/usr/share/icons/Yaru`, `/usr/share/icons/Adwaita`];
 const APP_DIRS = [
@@ -83,8 +82,8 @@ out.counts.symbolic = symbolicSet.size;
 out.counts.appIcons = appIcons.size;
 out.counts.lucide = lucide.length;
 
-mkdirSync(`${HERE}/build/icons`, {recursive: true});
-writeFileSync(`${HERE}/build/icons/worklist.json`, JSON.stringify(out, null, 1));
+mkdirSync(`${PATHS.build}/icons`, {recursive: true});
+writeFileSync(`${PATHS.build}/icons/worklist.json`, JSON.stringify(out, null, 1));
 console.log('counts:', JSON.stringify(out.counts));
 console.log('total unique names to cover:',
     new Set(CTX.flatMap(c => [...byCtx[c]])).size);

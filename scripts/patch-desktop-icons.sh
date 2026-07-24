@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# patch-desktop-icons.sh — a few snap apps hardcode Icon= to an absolute PNG path
+# patch-desktop-icons.sh: a few snap apps hardcode Icon= to an absolute PNG path
 # *inside* their snap (e.g. /snap/snap-store/current/.../app-center.png). The icon
 # theme cannot override an absolute path, so these keep their own icon no matter
 # what the Lucide theme provides.
@@ -9,25 +9,27 @@
 # swaps Icon= for a themable NAME that the Lucide theme ships. A user .desktop
 # fully shadows the system one, so we copy every field to avoid breaking Exec.
 #
-# Idempotent — safe to re-run (e.g. after a snap refresh). `--uninstall` removes
+# The desktop-id -> themable-name map lives in assets/icon-overrides.json
+# (desktopOverrides), not in this script.
+#
+# Idempotent, so it is safe to re-run (e.g. after a snap refresh). `--uninstall` removes
 # the overrides and restores the snap's own icons.
 set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO="$(cd "$HERE/.." && pwd -P)"
+OVERRIDES="$REPO/assets/icon-overrides.json"
 
 DEST="$HOME/.local/share/applications"
 SRCDIRS=(/var/lib/snapd/desktop/applications /var/lib/flatpak/exports/share/applications /usr/share/applications)
 
-# desktop-id (filename without .desktop)  ->  themable Icon name the theme ships
-declare -A MAP=(
-  [firmware-updater_firmware-updater]=firmware-updater
-  [firmware-updater_firmware-updater-app]=firmware-updater
-  [desktop-security-center_desktop-security-center]=desktop-security-center
-  [snap-store_snap-store]=snap-store
-  [snap-store_show-updates]=snap-store
-  [snapd-desktop-integration_snapd-desktop-integration]=snap-store
-)
+# load "desktop-id<TAB>themable-icon-name" lines from the JSON resource
+mapfile -t MAP_LINES < <(node -e '
+  const m = require(process.argv[1]).desktopOverrides || {};
+  for (const [id, icon] of Object.entries(m)) process.stdout.write(id + "\t" + icon + "\n");
+' "$OVERRIDES")
 
 find_src() {
-  local id="$1"
+  local id="$1" d
   for d in "${SRCDIRS[@]}"; do
     [ -f "$d/$id.desktop" ] && { echo "$d/$id.desktop"; return 0; }
   done
@@ -35,7 +37,8 @@ find_src() {
 }
 
 if [ "${1:-}" = "--uninstall" ]; then
-  for id in "${!MAP[@]}"; do
+  for line in "${MAP_LINES[@]}"; do
+    id="${line%%$'\t'*}"
     f="$DEST/$id.desktop"
     if [ -f "$f" ] && grep -q '^# Lucide-theme icon override' "$f"; then
       rm -f "$f"; echo "removed override: $id"
@@ -48,13 +51,14 @@ fi
 
 mkdir -p "$DEST"
 n=0
-for id in "${!MAP[@]}"; do
-  icon="${MAP[$id]}"
+for line in "${MAP_LINES[@]}"; do
+  id="${line%%$'\t'*}"
+  icon="${line#*$'\t'}"
   src="$(find_src "$id")" || { echo "skip $id (source .desktop not found)"; continue; }
   dst="$DEST/$id.desktop"
   # copy verbatim, replace ONLY Icon= lines, prepend a marker comment
   {
-    echo "# Lucide-theme icon override — regenerate with patch-desktop-icons.sh"
+    echo "# Lucide-theme icon override (regenerate with patch-desktop-icons.sh)"
     sed -E "s#^Icon=.*#Icon=$icon#" "$src"
   } > "$dst"
   grep -q '^Icon=' "$dst" || echo "Icon=$icon" >> "$dst"
