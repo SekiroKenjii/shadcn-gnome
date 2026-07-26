@@ -99,19 +99,33 @@ _build_gresource() {
     printf '    <file>%s</file>\n' "$rel" >> "$xml"
     n=$((n + 1))
   done <<< "$paths"
-  printf '  </gresource>\n</gresources>\n' >> "$xml"
   [ "$n" -gt 0 ] || return 1
 
-  # append our fragment to the greeter styles: gdm.css (login dialog) + the dark
-  # shell stylesheet (panel etc.). Not high-contrast (leave a11y untouched).
+  # Append our fragment to every stylesheet variant the shell could pick (the
+  # loader resolves <name>-light/dark.css before <name>.css). High-contrast is
+  # left alone for accessibility.
   local cand appended=0
-  for cand in gdm.css Yaru/gnome-shell-dark.css gnome-shell-dark.css; do
+  for cand in gdm.css gdm-light.css gdm-dark.css \
+              gnome-shell.css gnome-shell-light.css gnome-shell-dark.css \
+              Yaru/gnome-shell.css Yaru/gnome-shell-light.css Yaru/gnome-shell-dark.css; do
     if [ -f "$tmp/$cand" ]; then
       { printf '\n/* shadcn-gdm:%s begin */\n' "$THEME"; cat "$frag"; printf '\n/* shadcn-gdm:%s end */\n' "$THEME"; } >> "$tmp/$cand"
       appended=1
     fi
   done
   [ "$appended" = 1 ] || { warn "no greeter stylesheet (gdm.css / gnome-shell-dark.css) in base"; return 1; }
+
+  # GNOME 50's loader tries gdm-<variant>.css BEFORE gdm.css. The distro theme
+  # may not ship those names, and a miss could resolve to another theme's file,
+  # so provide themed aliases whenever the base lacks them.
+  local v
+  for v in light dark; do
+    if [ -f "$tmp/gdm.css" ] && [ ! -f "$tmp/gdm-$v.css" ]; then
+      cp "$tmp/gdm.css" "$tmp/gdm-$v.css"
+      printf '    <file>%s</file>\n' "gdm-$v.css" >> "$xml"
+    fi
+  done
+  printf '  </gresource>\n</gresources>\n' >> "$xml"
 
   glib-compile-resources --sourcedir="$tmp" --target="$out" "$xml" 2>/dev/null || return 1
   return 0
@@ -124,21 +138,68 @@ validate() {
   gresource list "$our" >/dev/null 2>&1 || { warn "built gresource is unreadable"; return 1; }
   cbase="$(gresource list "$base" 2>/dev/null | grep -c . || true)"
   cour="$(gresource list "$our" 2>/dev/null | grep -c . || true)"
-  [ "$cour" = "$cbase" ] || { warn "resource count changed ($cbase -> $cour); aborting"; return 1; }
+  # ours may add the gdm-light/dark.css aliases; losing resources is the bug
+  [ "$cour" -ge "$cbase" ] || { warn "resources lost ($cbase -> $cour); aborting"; return 1; }
   # Capture then match. A `producer | grep -q` pipeline can false-negative under
   # set -o pipefail: grep exits on the first hit, the producer gets SIGPIPE, and
   # pipefail then reports the whole pipeline as failed even though grep matched.
   list="$(gresource list "$our" 2>/dev/null || true)"
-  case "$list" in
-    *"/org/gnome/shell/theme/gdm.css"*) : ;;
-    *) warn "gdm.css missing from built gresource"; return 1 ;;
-  esac
-  gdmcss="$(gresource extract "$our" /org/gnome/shell/theme/gdm.css 2>/dev/null || true)"
-  case "$gdmcss" in
-    *"shadcn-gdm:$THEME"*) : ;;
-    *) warn "our marker missing from built gresource"; return 1 ;;
-  esac
+  local f
+  for f in gdm.css gdm-light.css gdm-dark.css; do
+    case "$list" in
+      *"/org/gnome/shell/theme/$f"*) : ;;
+      *) warn "$f missing from built gresource"; return 1 ;;
+    esac
+    gdmcss="$(gresource extract "$our" "/org/gnome/shell/theme/$f" 2>/dev/null || true)"
+    case "$gdmcss" in
+      *"shadcn-gdm:$THEME"*) : ;;
+      *) warn "our marker missing from $f"; return 1 ;;
+    esac
+  done
   return 0
+}
+
+# Neutralise the greeter accent at the source. Yaru derives its focus rings from
+# st-mix(-st-accent-color, ...) with selectors more specific than anything a
+# fragment can add, so the reliable fix is to set the greeter's accent-color
+# (GNOME 47+) to the neutral "slate" preset via the GDM dconf database.
+#
+# SAFETY: the profile is only rewritten when it lacks system-db:gdm, and it is
+# then composed from the DISTRO's stock profile so the greeter defaults
+# (session-name and friends) survive. Replacing the profile wholesale breaks the
+# login screen. Our keyfile is a separate, clearly named file, so an existing
+# system-db (for example a cursor setting from another tool) is left untouched.
+setup_accent_dconf() {
+  command -v dconf >/dev/null || { warn "dconf not available; skipping the greeter accent"; return 0; }
+  local prof=/etc/dconf/profile/gdm stock=/usr/share/dconf/profile/gdm cur=""
+  [ -f "$prof" ] && cur="$(cat "$prof")"
+  case "$cur" in
+    *system-db:gdm*) : ;;   # already layered (possibly by another tool): leave alone
+    *)
+      mkdir -p /etc/dconf/profile
+      if [ -f "$stock" ]; then
+        { head -1 "$stock"; echo 'system-db:gdm'; tail -n +2 "$stock"; } > "$prof"
+      elif [ -n "$cur" ]; then
+        cp "$prof" "$prof.shadcn-bak"
+        { head -1 "$prof.shadcn-bak"; echo 'system-db:gdm'; tail -n +2 "$prof.shadcn-bak"; } > "$prof"
+      else
+        printf 'user-db:user\nsystem-db:gdm\n' > "$prof"
+      fi
+      log "layered system-db:gdm into $prof (distro defaults preserved)"
+      ;;
+  esac
+  mkdir -p /etc/dconf/db/gdm.d
+  cat > /etc/dconf/db/gdm.d/07-shadcn-accent <<EOF
+# Written by shadcn-gnome. Remove this file and run 'dconf update' to revert.
+[org/gnome/desktop/interface]
+accent-color='slate'
+color-scheme='prefer-dark'
+EOF
+  if dconf update 2>/dev/null; then
+    log "greeter accent set to neutral 'slate' (no more distro accent on focus rings)"
+  else
+    warn "dconf update failed; the greeter keeps its distro accent"
+  fi
 }
 
 do_install() {
@@ -176,6 +237,8 @@ do_install() {
     log "replaced $STOCK (backup at $BACKUP). Revert: sudo $0 uninstall"
   fi
 
+  setup_accent_dconf
+
   log "done. The change appears on the NEXT login/lock screen (no GDM restart)."
 }
 
@@ -200,6 +263,13 @@ do_uninstall() {
     log "restored stock gresource from backup"; removed=1
   fi
   rm -rf "$STORE"
+  # drop only OUR dconf keyfile; the profile and any other system-db keyfile
+  # (a cursor setting from another tool, say) are left as they are.
+  if [ -f /etc/dconf/db/gdm.d/07-shadcn-accent ]; then
+    rm -f /etc/dconf/db/gdm.d/07-shadcn-accent
+    dconf update 2>/dev/null || true
+    log "removed the greeter accent override"; removed=1
+  fi
   [ "$removed" = 1 ] && log "GDM theming removed; distro greeter restored on next login." \
                      || log "no shadcn GDM theming was installed."
 }

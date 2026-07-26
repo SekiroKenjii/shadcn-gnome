@@ -85,8 +85,16 @@ mistake could stop graphical login. This is handled by `lib/gdm-theme-setup.sh`
   **auto-revert** to the distro theme. Inherently reversible.
 - On **Fedora/other**, the stock `gnome-shell-theme.gresource` is **backed up
   once** before replacing; uninstall restores it.
-- We **never restart GDM** and **never touch the GDM dconf profile** (wiping it
-  drops the greeter's session-name and breaks login, a known footgun).
+- We **never restart GDM**, and the GDM dconf profile is only ever **added to**,
+  never replaced (replacing it drops the greeter's session-name and breaks
+  login, a known failure mode).
+
+The greeter also gets one dconf key, `accent-color='slate'`, written to
+`/etc/dconf/db/gdm.d/07-shadcn-accent`. Distro themes derive their focus rings
+from the system accent with selectors too specific to override in CSS, so the
+password field, user tile, and shutdown dialog keep the distro accent unless it
+is neutralised at the source. The keyfile is separate and clearly named, so any
+other tool's greeter settings are left alone, and uninstall removes only ours.
 
 The change appears on the **next** lock/login screen. To revert:
 `./uninstall.sh`, or directly `sudo update-alternatives --remove gdm-theme.gresource <path>`
@@ -172,6 +180,45 @@ node scripts/enumerate-icons.mjs && node scripts/prepass-icons.mjs
 REBUILD_MAPPING=1 node lib/generate-icons.mjs
 ```
 
+## Disclaimer
+
+**Use this at your own risk.** The software is provided "as is", without
+warranty of any kind, express or implied. The authors and contributors are not
+liable for any claim, damage, data loss, or other liability arising from its
+use. See [LICENSE](LICENSE) for the full terms.
+
+Read this before running the installer:
+
+- **It changes your desktop configuration.** The installer writes to
+  `~/.config/gtk-3.0` and `~/.config/gtk-4.0`, `~/.themes`, `~/.local/share/icons`,
+  `~/.local/share/fonts`, and changes GNOME settings through `gsettings` and
+  `dconf`. If you already keep a `gtk.css` (a dotfiles or stow setup, for
+  example), **back it up first**: installing overwrites that file, and
+  uninstalling deletes it.
+- **`--gdm` needs root and touches system files.** It rebuilds the GNOME Shell
+  theme gresource that the login screen reads, and adds one dconf keyfile for
+  the greeter. It is written defensively (build and validate in a tempdir, swap
+  only on success, `update-alternatives` where available, backup elsewhere,
+  never replace the dconf profile), but **a broken greeter can leave you unable
+  to log in graphically**. Before using it the first time, know how to reach a
+  TTY (`Ctrl+Alt+F3`) and run `./uninstall.sh` from there. Skip this flag if you
+  are not comfortable with that.
+- **`--firefox` writes into your Firefox profiles.** An existing
+  `userChrome.css` is backed up once as `userChrome.css.shadcn-bak`, and the
+  prefs go into a marked block in `user.js`. Firefox chrome CSS is unofficial
+  and can break after a Firefox update; if the browser looks wrong after an
+  upgrade, remove the two files under `chrome/` in your profile.
+- **`--patch-vitals` edits an extension's files in place.** The originals are
+  backed up inside the extension folder and restored on uninstall, but updating
+  the extension replaces them anyway; just re-run the flag afterwards.
+- **Theme rendering depends on your GNOME version and distro.** The result is
+  tested on GNOME 50 on Ubuntu. Other versions may shift selectors, so parts of
+  the theme can look different or not apply at all.
+
+`./uninstall.sh` reverses everything this project installs. It cannot restore
+files that existed before and were overwritten, which is why the backup note
+above matters.
+
 ## Credits & licenses
 
 - Palettes: the *Graphite*, *Mono*, and *Vercel* presets from
@@ -179,3 +226,7 @@ REBUILD_MAPPING=1 node lib/generate-icons.mjs
 - Icons: [Lucide](https://lucide.dev) (ISC) + [Tabler Icons](https://tabler.io/icons) (MIT).
 - Font: [Geist](https://vercel.com/font) (OFL).
 - This project's own code: MIT.
+
+This project is not affiliated with, endorsed by, or sponsored by GNOME,
+Canonical, Vercel, shadcn, Lucide, Tabler, or Mozilla. All trademarks belong to
+their respective owners.
