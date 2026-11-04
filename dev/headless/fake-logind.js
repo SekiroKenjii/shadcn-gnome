@@ -5,10 +5,12 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
 const SESSION_PATH = '/org/freedesktop/login1/session/auto';
+const USER_PATH = '/org/freedesktop/login1/user/self';
 
 const MANAGER_XML = `<node><interface name="org.freedesktop.login1.Manager">
   <method name="GetSession"><arg type="s" direction="in"/><arg type="o" direction="out"/></method>
   <method name="GetSessionByPID"><arg type="u" direction="in"/><arg type="o" direction="out"/></method>
+  <method name="GetUser"><arg type="u" direction="in"/><arg type="o" direction="out"/></method>
   <method name="ListSessions"><arg type="a(susso)" direction="out"/></method>
   <method name="CanSuspend"><arg type="s" direction="out"/></method>
   <method name="CanHibernate"><arg type="s" direction="out"/></method>
@@ -32,12 +34,22 @@ const SESSION_XML = `<node><interface name="org.freedesktop.login1.Session">
   <signal name="Unlock"/>
 </interface></node>`;
 
+const USER_XML = `<node><interface name="org.freedesktop.login1.User">
+  <property name="Display" type="(so)" access="read"/>
+  <property name="IdleHint" type="b" access="read"/>
+  <property name="Sessions" type="a(so)" access="read"/>
+  <property name="State" type="s" access="read"/>
+</interface></node>`;
+
 class Manager {
     GetSession() {
         return SESSION_PATH;
     }
     GetSessionByPID() {
         return SESSION_PATH;
+    }
+    GetUser() {
+        return USER_PATH;
     }
     ListSessions() {
         return [['auto', 0, 'user', 'seat0', SESSION_PATH]];
@@ -59,6 +71,21 @@ class Manager {
     }
     InhibitAsync(_parameters, invocation) {
         invocation.return_dbus_error('org.freedesktop.DBus.Error.NotSupported', 'inhibitors are not available here');
+    }
+}
+
+class User {
+    get Display() {
+        return ['auto', SESSION_PATH];
+    }
+    get IdleHint() {
+        return false;
+    }
+    get Sessions() {
+        return [['auto', SESSION_PATH]];
+    }
+    get State() {
+        return 'active';
     }
 }
 
@@ -96,6 +123,7 @@ Gio.bus_own_name(
         for (const [xml, implementation, path] of [
             [MANAGER_XML, new Manager(), '/org/freedesktop/login1'],
             [SESSION_XML, new Session(), SESSION_PATH],
+            [USER_XML, new User(), USER_PATH],
         ]) {
             const object = Gio.DBusExportedObject.wrapJSObject(xml, implementation);
             object.export(connection, path);
