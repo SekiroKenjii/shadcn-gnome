@@ -1,0 +1,82 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+switch {
+  padding: 2px;
+  border-radius: t.radius(full);
+  border: 1px solid v.token(border);
+  background-color: v.token(secondary);
+  box-shadow: none;
+  transition: background-color #{t.duration(toggle)} #{t.$easing};
+}
+
+switch > slider {
+  min-width: 17px;
+  min-height: 16px;
+  margin: 0;
+  border-radius: t.radius(full);
+  background-color: v.token(fg);
+  box-shadow: none;
+  transition: all #{t.duration(toggle)} #{t.$easing};
+}
+
+switch:checked {
+  border-color: v.token(primary);
+  background-color: v.token(primary);
+}
+
+switch:checked > slider {
+  background-color: v.token(primary-fg);
+}
+
+switch > image {
+  color: transparent;
+}
+
+switch:disabled {
+  opacity: 0.5;
+}
+
+check,
+radio {
+  min-width: 14px;
+  min-height: 14px;
+  padding: 1px;
+  border: 1px solid v.token(border);
+  background-color: v.token(card);
+  box-shadow: none;
+  color: v.token(primary-fg);
+  transition: background-color #{t.duration(toggle)} #{t.$easing}, border-color #{t.duration(toggle)} #{t.$easing};
+}
+
+check {
+  border-radius: t.radius(sm);
+}
+
+radio {
+  border-radius: t.radius(full);
+}
+
+check:checked,
+check:indeterminate {
+  border-color: v.token(primary);
+  background-color: v.token(primary);
+  color: v.token(primary-fg);
+}
+
+radio:checked {
+  border-color: v.token(primary);
+  background-color: v.token(card);
+  color: v.token(primary);
+}
+
+check:hover:not(:checked):not(:indeterminate),
+radio:hover:not(:checked) {
+  border-color: v.token(ring);
+}
+
+checkbutton:focus-visible > check,
+checkbutton:focus-visible > radio {
+  outline: 2px solid v.token(ring);
+  outline-offset: 2px;
+}

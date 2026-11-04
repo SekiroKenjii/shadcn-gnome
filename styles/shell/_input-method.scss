@@ -1,0 +1,33 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.candidate-popup-content {
+  @include m.surface(popover, lg, 0 6px 18px);
+  padding: 6px;
+  spacing: 4px;
+}
+
+.candidate-index {
+  padding: 0 6px 0 0;
+  color: t.color(muted-fg);
+  font-family: t.$font-monospace;
+}
+
+.candidate-box {
+  padding: 4px 8px;
+  border-radius: t.radius(sm);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+
+  &:selected {
+    background-color: t.color(accent);
+    color: t.color(fg);
+  }
+}
+
+.candidate-page-button {
+  padding: 4px;
+  @include m.flat-button(sm);
+}

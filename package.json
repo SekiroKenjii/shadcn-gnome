@@ -1,7 +1,7 @@
 {
   "name": "shadcn-gnome",
-  "version": "1.0.0",
-  "description": "shadcn-style GNOME desktop themes (Graphite, Mono, Vercel) with a full Lucide icon set, Geist font, terminal and GDM theming",
+  "version": "2.0.0",
+  "description": "shadcn-style GNOME desktop: GTK4/GTK3 and GNOME Shell themes (light + dark), GDM login screen, Lucide icons, SVG cursors, wallpapers, Geist and terminal palettes",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -9,11 +9,19 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "node lib/build-theme.mjs",
-    "build:icons": "node lib/generate-icons.mjs",
-    "enumerate": "node scripts/enumerate-icons.mjs",
-    "prepass": "node scripts/prepass-icons.mjs",
-    "assets": "bash scripts/download-assets.sh"
+    "build": "node bin/shadcn-gnome.mjs build --theme all",
+    "build:theme": "node bin/shadcn-gnome.mjs build",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "lint": "biome check . && npm run lint:sh",
+    "lint:sh": "shellcheck -x install.sh uninstall.sh installer/*.sh installer/lib/*.sh installer/components/*.sh dev/*.sh dev/lib/*.sh dev/headless/*.sh dev/vm/*.sh scripts/*.sh",
+    "format": "biome format --write .",
+    "contrast": "node bin/shadcn-gnome.mjs contrast",
+    "preview": "node dev/preview/build-preview.mjs",
+    "screens": "dev/headless/capture.sh",
+    "mapping:enumerate": "node scripts/mapping-enumerate.mjs",
+    "mapping:prepass": "node scripts/mapping-prepass.mjs",
+    "mapping:merge": "node scripts/mapping-merge.mjs",
+    "fonts:refresh": "bash scripts/refresh-fonts.sh"
   },
   "keywords": [
     "gnome",
@@ -23,11 +31,22 @@
     "icons",
     "gtk",
     "libadwaita",
-    "geist"
+    "geist",
+    "gdm",
+    "cursor-theme",
+    "gnome-shell"
   ],
   "dependencies": {
+    "@resvg/resvg-js": "2.6.2",
     "@tabler/icons": "3.34.0",
     "lucide-static": "1.25.0",
+    "sass": "1.97.3",
     "svg-path-properties": "1.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.8"
+  },
+  "bin": {
+    "shadcn-gnome": "bin/shadcn-gnome.mjs"
   }
 }

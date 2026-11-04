@@ -1,0 +1,23 @@
+@use 'sass:meta';
+@use 'stage';
+
+// Every piece of Shell chrome lives under the #uiGroup actor. Scoping the
+// overrides there gives them an id in their specificity, so they win over the
+// distro stylesheet's nested selectors without !important.
+#uiGroup {
+  @include meta.load-css('base');
+  @include meta.load-css('panel');
+  @include meta.load-css('popup-menus');
+  @include meta.load-css('quick-settings');
+  @include meta.load-css('calendar');
+  @include meta.load-css('message-list');
+  @include meta.load-css('osd');
+  @include meta.load-css('switchers');
+  @include meta.load-css('dialogs');
+  @include meta.load-css('screenshot');
+  @include meta.load-css('overview');
+  @include meta.load-css('app-grid');
+  @include meta.load-css('lock-screen');
+  @include meta.load-css('login');
+  @include meta.load-css('input-method');
+}

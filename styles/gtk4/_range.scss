@@ -1,0 +1,64 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+scale > trough {
+  min-height: 6px;
+  border-radius: t.radius(full);
+  background-color: v.token(muted);
+}
+
+scale.vertical > trough {
+  min-width: 6px;
+}
+
+scale > trough > highlight {
+  border-radius: t.radius(full);
+  background-color: v.token(primary);
+}
+
+scale > trough > slider {
+  min-width: 16px;
+  min-height: 16px;
+  margin: -6px;
+  border-radius: t.radius(full);
+  border: 1px solid v.token(primary);
+  background-color: v.token(bg);
+  box-shadow: 0 1px 3px v.token(shade);
+}
+
+scale > marks > indicator,
+scale > marks > mark > indicator {
+  background-color: v.token(border);
+  min-width: 1px;
+  min-height: 6px;
+}
+
+progressbar > trough {
+  min-height: 6px;
+  border-radius: t.radius(full);
+  background-color: v.token(muted);
+}
+
+progressbar > trough > progress {
+  min-height: 6px;
+  border-radius: t.radius(full);
+  background-color: v.token(fg);
+}
+
+progressbar.osd > trough > progress {
+  background-color: v.token(fg);
+}
+
+levelbar > trough > block {
+  min-height: 8px;
+  border-radius: t.radius(sm);
+  background-color: v.token(fg);
+}
+
+levelbar > trough > block.empty {
+  background-color: v.token(muted);
+}
+
+levelbar > trough > block.low {
+  background-color: v.token(warning);
+}

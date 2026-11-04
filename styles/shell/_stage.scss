@@ -1,0 +1,7 @@
+@use '../lib/tokens' as t;
+
+stage {
+  color: t.color(fg);
+  -st-accent-color: t.color(primary);
+  -st-accent-fg-color: t.color(primary-fg);
+}

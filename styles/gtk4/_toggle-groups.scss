@@ -1,0 +1,44 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+toggle-group,
+stackswitcher,
+.inline-view-switcher {
+  padding: 3px;
+  border-radius: t.radius(md);
+  border: 1px solid v.token(border);
+  background-color: v.token(muted);
+  box-shadow: none;
+}
+
+toggle-group > toggle,
+stackswitcher > button,
+stackswitcher > button:not(.flat):not(.osd):not(.card) {
+  min-height: 26px;
+  padding: 0 12px;
+  border: none;
+  border-radius: t.radius(sm);
+  background-color: transparent;
+  color: v.token(muted-fg);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+toggle-group > toggle:hover,
+stackswitcher > button:hover {
+  color: v.token(fg);
+  background-color: transparent;
+}
+
+toggle-group > toggle:checked,
+stackswitcher > button:checked,
+stackswitcher > button:not(.flat):not(.osd):not(.card):checked {
+  background-color: v.token(bg);
+  color: v.token(fg);
+  box-shadow: 0 0 0 1px v.token(border), 0 1px 2px v.token(shade);
+}
+
+toggle-group > separator {
+  min-width: 0;
+  background-color: transparent;
+}

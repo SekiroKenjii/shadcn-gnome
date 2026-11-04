@@ -1,0 +1,76 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+entry,
+spinbutton {
+  border-radius: t.radius(md);
+  border: 1px solid v.token(border);
+  background-color: v.token(card);
+  color: v.token(fg);
+  box-shadow: none;
+  transition: border-color #{t.duration(popover)} #{t.$easing}, box-shadow #{t.duration(popover)} #{t.$easing};
+}
+
+entry > text > placeholder,
+entry > placeholder {
+  color: v.token(muted-fg);
+}
+
+entry:focus-within,
+spinbutton:focus-within {
+  outline-style: none;
+  border-color: v.token(ring);
+  box-shadow: 0 0 0 1px v.token(ring);
+}
+
+entry.error,
+spinbutton.error {
+  color: v.token(fg);
+  border-color: v.token(destructive);
+  box-shadow: 0 0 0 1px v.token(destructive);
+}
+
+entry.warning {
+  border-color: v.token(warning);
+}
+
+entry.success {
+  border-color: v.token(success);
+}
+
+entry:disabled,
+spinbutton:disabled {
+  opacity: 0.5;
+}
+
+headerbar entry,
+searchbar entry {
+  background-color: v.token(card);
+}
+
+spinbutton > button,
+spinbutton > button:not(.flat):not(.osd):not(.card) {
+  border: none;
+  border-left: 1px solid v.token(border);
+  border-radius: 0;
+  background-color: transparent;
+  padding: 0 8px;
+}
+
+spinbutton > button:hover {
+  background-color: v.token(hover);
+}
+
+spinbutton > button:last-child {
+  border-top-right-radius: t.radius(md);
+  border-bottom-right-radius: t.radius(md);
+}
+
+spinbutton.vertical > button {
+  border-left: none;
+}
+
+label.error,
+.error > label {
+  color: v.token(destructive-tint);
+}

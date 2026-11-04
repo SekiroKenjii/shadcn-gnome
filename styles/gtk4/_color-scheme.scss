@@ -1,0 +1,67 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+@mixin libadwaita-colors($scheme) {
+  --window-bg-color: #{t.color-in($scheme, bg)};
+  --window-fg-color: #{t.color-in($scheme, fg)};
+  --view-bg-color: #{t.color-in($scheme, bg)};
+  --view-fg-color: #{t.color-in($scheme, fg)};
+  --headerbar-bg-color: #{t.color-in($scheme, headerbar)};
+  --headerbar-fg-color: #{t.color-in($scheme, fg)};
+  --headerbar-border-color: #{t.color-in($scheme, border)};
+  --headerbar-backdrop-color: #{t.color-in($scheme, headerbar)};
+  --headerbar-shade-color: #{t.color-in($scheme, border)};
+  --headerbar-darker-shade-color: #{t.color-in($scheme, border)};
+  --sidebar-bg-color: #{t.color-in($scheme, sidebar)};
+  --sidebar-fg-color: #{t.color-in($scheme, fg)};
+  --sidebar-backdrop-color: #{t.color-in($scheme, sidebar)};
+  --sidebar-border-color: #{t.color-in($scheme, border)};
+  --sidebar-shade-color: #{t.color-in($scheme, border)};
+  --secondary-sidebar-bg-color: #{t.color-in($scheme, secondary-sidebar)};
+  --secondary-sidebar-fg-color: #{t.color-in($scheme, fg)};
+  --secondary-sidebar-backdrop-color: #{t.color-in($scheme, secondary-sidebar)};
+  --secondary-sidebar-border-color: #{t.color-in($scheme, border)};
+  --secondary-sidebar-shade-color: #{t.color-in($scheme, border)};
+  --card-bg-color: #{t.color-in($scheme, card)};
+  --card-fg-color: #{t.color-in($scheme, fg)};
+  --card-shade-color: #{t.color-in($scheme, border)};
+  --dialog-bg-color: #{t.color-in($scheme, popover)};
+  --dialog-fg-color: #{t.color-in($scheme, fg)};
+  --popover-bg-color: #{t.color-in($scheme, popover)};
+  --popover-fg-color: #{t.color-in($scheme, fg)};
+  --popover-shade-color: #{t.color-in($scheme, shade)};
+  --thumbnail-bg-color: #{t.color-in($scheme, card)};
+  --thumbnail-fg-color: #{t.color-in($scheme, fg)};
+  --overview-bg-color: #{t.color-in($scheme, bg)};
+  --overview-fg-color: #{t.color-in($scheme, fg)};
+  --shade-color: #{t.color-in($scheme, shade)};
+  --scrollbar-outline-color: transparent;
+  --accent-bg-color: #{t.color-in($scheme, primary)};
+  --accent-fg-color: #{t.color-in($scheme, primary-fg)};
+  --accent-color: #{t.color-in($scheme, accent-text)};
+  --destructive-bg-color: #{t.color-in($scheme, destructive)};
+  --destructive-fg-color: #{t.color-in($scheme, destructive-fg)};
+  --destructive-color: #{t.color-in($scheme, destructive-tint)};
+  --success-bg-color: #{t.color-in($scheme, success)};
+  --success-fg-color: #{t.color-in($scheme, bg)};
+  --success-color: #{t.color-in($scheme, success)};
+  --warning-bg-color: #{t.color-in($scheme, warning)};
+  --warning-fg-color: #{t.color-in($scheme, bg)};
+  --warning-color: #{t.color-in($scheme, warning)};
+  --error-bg-color: #{t.color-in($scheme, destructive)};
+  --error-fg-color: #{t.color-in($scheme, destructive-fg)};
+  --error-color: #{t.color-in($scheme, destructive-tint)};
+  --border-color: #{t.color-in($scheme, border)};
+}
+
+:root {
+  @include v.declare-palette(light);
+  @include libadwaita-colors(light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include v.declare-palette(dark);
+    @include libadwaita-colors(dark);
+  }
+}

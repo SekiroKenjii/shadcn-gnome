@@ -1,0 +1,29 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+@media (prefers-contrast: more) {
+  :root {
+    --shadcn-border: var(--shadcn-muted-fg);
+    --border-color: var(--shadcn-muted-fg);
+  }
+
+  button:focus-visible,
+  checkbutton:focus-visible > check,
+  checkbutton:focus-visible > radio {
+    outline-width: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  entry,
+  spinbutton,
+  switch,
+  switch > slider,
+  check,
+  radio,
+  row {
+    transition-property: opacity, background-color, color, border-color;
+    transition-duration: #{t.duration(reduced)};
+  }
+}

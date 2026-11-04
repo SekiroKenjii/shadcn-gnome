@@ -1,0 +1,115 @@
+@use '../lib/tokens' as t;
+
+@mixin panel-fill($color) {
+  box-shadow: inset 0 0 0 100px $color;
+}
+
+#panel {
+  background-color: t.color(panel);
+  box-shadow: inset 0 -1px 0 0 t.color(panel-border);
+  font-weight: 600;
+  font-size: t.pt(13px);
+  height: 32px;
+
+  .panel-button {
+    color: t.color(panel-fg);
+    border: 4px solid transparent;
+    border-radius: t.radius(sm);
+    -natural-hpadding: 10px;
+    -minimum-hpadding: 6px;
+    transition-duration: t.duration(popover);
+    @include panel-fill(transparent);
+
+    &:hover,
+    &:focus {
+      color: t.color(panel-fg);
+      @include panel-fill(t.color(panel-hover));
+    }
+
+    &:active,
+    &:checked,
+    &:active:hover,
+    &:checked:hover {
+      color: t.color(panel-fg);
+      @include panel-fill(t.color(panel-active));
+    }
+
+    .system-status-icon {
+      icon-size: 16px;
+      padding: 0 4px;
+      margin: 0;
+    }
+
+    &#panelActivities .workspace-dot {
+      min-width: 6px;
+      min-height: 6px;
+      border-radius: t.radius(sm);
+      background-color: t.color(panel-fg);
+    }
+
+    &.clock-display {
+      background: none;
+      box-shadow: none;
+      border: none;
+
+      .clock {
+        border: 4px solid transparent;
+        border-radius: t.radius(sm);
+        box-shadow: none;
+      }
+
+      &:hover .clock,
+      &:focus .clock {
+        @include panel-fill(t.color(panel-hover));
+      }
+
+      &:active .clock,
+      &:checked .clock {
+        @include panel-fill(t.color(panel-active));
+      }
+
+      .messages-indicator {
+        icon-size: 6px;
+        color: t.color(panel-fg);
+      }
+    }
+
+    &.screen-recording-indicator {
+      color: t.color(destructive-fg);
+      @include panel-fill(t.color(destructive));
+
+      &:hover {
+        @include panel-fill(t.color(destructive));
+      }
+    }
+
+    &.screen-sharing-indicator {
+      color: t.color(panel-fg);
+      @include panel-fill(t.color(panel-active));
+    }
+  }
+
+  .privacy-indicator {
+    color: t.color(warning);
+  }
+
+  &:overview,
+  &.unlock-screen,
+  &.login-screen {
+    background-color: transparent;
+    box-shadow: none;
+
+    .panel-button,
+    .panel-button.clock-display .clock {
+      color: t.color(fg);
+    }
+
+    #panelActivities .workspace-dot {
+      background-color: t.color(fg);
+    }
+  }
+
+  &:overview .panel-button#panelActivities {
+    @include panel-fill(t.color(secondary));
+  }
+}

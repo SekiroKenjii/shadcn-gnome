@@ -1,0 +1,49 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+.navigation-sidebar > row,
+.navigation-sidebar > listview > row,
+sidebar row {
+  min-height: 36px;
+  margin: 0 6px 2px;
+  padding: 0 10px;
+  border-radius: t.radius(sm);
+}
+
+.navigation-sidebar > row:hover,
+.navigation-sidebar > listview > row:hover,
+sidebar row:hover {
+  background-color: v.token(hover);
+}
+
+.navigation-sidebar > row:selected,
+.navigation-sidebar > listview > row:selected,
+sidebar row:selected {
+  background-color: v.token(active-sel);
+  color: v.token(fg);
+  font-weight: 500;
+}
+
+.navigation-sidebar > row:focus-visible,
+sidebar row:focus-visible {
+  outline: 2px solid v.token(ring);
+  outline-offset: -2px;
+}
+
+.navigation-sidebar > header,
+.navigation-sidebar > listview > header,
+sidebar header {
+  padding: 8px 10px 4px;
+  font-size: 78%;
+  font-weight: 600;
+  color: v.token(muted-fg);
+}
+
+.navigation-sidebar .badge,
+sidebar .badge {
+  padding: 0 6px;
+  border-radius: t.radius(full);
+  background-color: v.token(primary);
+  color: v.token(primary-fg);
+  font-weight: 600;
+}

@@ -1,0 +1,128 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.modal-dialog {
+  @include m.surface(popover, xl, 0 16px 40px);
+  padding: 0;
+
+  .modal-dialog-content-box {
+    margin: 24px 24px 20px;
+    spacing: 10px;
+  }
+
+  .modal-dialog-button-box {
+    padding: 0 16px 16px;
+    spacing: 8px;
+    background-color: transparent;
+    border-top: none;
+  }
+
+  .modal-dialog-button {
+    min-height: 34px;
+    padding: 0 16px;
+    font-size: t.pt(13.5px);
+    font-weight: 500;
+    @include m.secondary-button(md);
+
+    &:first-child,
+    &:last-child {
+      border-radius: t.radius(md);
+    }
+
+    &:default,
+    &.default {
+      @include m.primary-button(md);
+    }
+
+    &.destructive-action {
+      background-color: t.color(destructive);
+      border-color: t.color(destructive);
+      color: t.color(destructive-fg);
+    }
+  }
+}
+
+.message-dialog-content {
+  spacing: 10px;
+}
+
+.message-dialog-title {
+  font-size: t.pt(17px);
+  font-weight: 600;
+  text-align: center;
+}
+
+.message-dialog-description {
+  font-size: t.pt(13.5px);
+  color: t.color(muted-fg);
+  text-align: center;
+}
+
+.end-session-dialog {
+  width: 400px;
+
+  .check-box {
+    font-size: t.pt(13px);
+  }
+}
+
+.prompt-dialog {
+  width: 400px;
+}
+
+.prompt-dialog-password-entry,
+.run-dialog-entry {
+  min-height: 34px;
+  padding: 0 12px;
+  @include m.text-entry;
+}
+
+.run-dialog-entry {
+  font-family: t.$font-monospace;
+  font-size: t.pt(13px);
+}
+
+.run-dialog-description {
+  font-size: t.pt(12px);
+  color: t.color(muted-fg);
+}
+
+.prompt-dialog-error-label {
+  color: t.color(destructive-tint);
+}
+
+.prompt-dialog-info-label,
+.prompt-dialog-null-label {
+  color: t.color(muted-fg);
+}
+
+.polkit-dialog-user-layout {
+  spacing: 10px;
+}
+
+.polkit-dialog-user-root-label {
+  color: t.color(warning);
+}
+
+.dialog-list-item {
+  border-radius: t.radius(md);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+}
+
+.audio-selection-device {
+  border-radius: t.radius(lg);
+  border: 1px solid t.color(border);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+}
+
+.access-dialog,
+.welcome-dialog-image {
+  border-radius: t.radius(xl);
+}

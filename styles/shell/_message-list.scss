@@ -1,0 +1,172 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.message-list {
+  padding: 0;
+}
+
+.message-list-placeholder {
+  color: t.color(muted-fg);
+
+  StIcon {
+    icon-size: 32px;
+  }
+}
+
+.message {
+  padding: 12px;
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background-color: t.color(bg);
+  color: t.color(fg);
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  .message-header {
+    color: t.color(muted-fg);
+    font-size: t.pt(12px);
+  }
+
+  .message-source-title {
+    font-weight: 600;
+    color: t.color(fg);
+  }
+
+  .message-source-icon {
+    icon-size: 16px;
+    color: t.color(fg);
+  }
+
+  .message-title {
+    font-weight: 600;
+    color: t.color(fg);
+  }
+
+  .message-body {
+    color: t.color(muted-fg);
+  }
+
+  .message-close-button,
+  .message-expand-button {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border-radius: t.radius(sm);
+    border: none;
+    background-color: t.color(secondary);
+    color: t.color(fg);
+
+    &:hover,
+    &:focus {
+      background-color: t.color(hover);
+    }
+  }
+}
+
+.message-notification-group {
+  .message-group-header {
+    padding: 0 0 6px;
+  }
+
+  .message-group-title {
+    font-weight: 600;
+  }
+
+  .message-collapse-button {
+    border-radius: t.radius(sm);
+    background-color: t.color(secondary);
+    color: t.color(fg);
+
+    &:hover {
+      background-color: t.color(hover);
+    }
+  }
+}
+
+.message-list-controls {
+  padding: 8px 0 0;
+  spacing: 12px;
+  font-size: t.pt(13px);
+}
+
+.message-list-clear-button {
+  padding: 6px 14px;
+  @include m.secondary-button(md);
+}
+
+.message-media-control {
+  padding: 6px;
+  border-radius: t.radius(sm);
+  background-color: transparent;
+  color: t.color(fg);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+
+  &:last-child:ltr,
+  &:first-child:rtl {
+    background-color: transparent;
+  }
+}
+
+.media-message .message-icon {
+  border-radius: t.radius(sm);
+  background-color: t.color(muted);
+  border: 1px solid t.color(border);
+}
+
+.notification-banner {
+  @include m.surface(popover, lg, 0 10px 30px);
+  padding: 14px;
+  min-width: 440px;
+  max-width: 440px;
+  margin: 8px;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(popover);
+  }
+
+  .message {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .notification-buttons-bin {
+    padding-top: 8px;
+    spacing: 8px;
+  }
+
+  .notification-button {
+    min-height: 20px;
+    padding: 4px 12px;
+    @include m.secondary-button(md);
+    font-weight: 500;
+
+    &:first-child {
+      border-radius: t.radius(md);
+    }
+
+    &:last-child {
+      border-radius: t.radius(md);
+      @include m.primary-button(md);
+    }
+  }
+}
+
+.summary-source-counter,
+.message-group-count {
+  font-size: t.pt(11px);
+  font-weight: 600;
+  padding: 1px 7px;
+  border: 1px solid t.color(border);
+  border-radius: t.radius(full);
+  background-color: transparent;
+  color: t.color(fg);
+}

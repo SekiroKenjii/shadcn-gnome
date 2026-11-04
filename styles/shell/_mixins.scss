@@ -1,0 +1,125 @@
+@use '../lib/tokens' as t;
+
+@mixin surface($background: popover, $radius: lg, $shadow: 0 6px 18px) {
+  background-color: t.color($background);
+  color: t.color(fg);
+  border: 1px solid t.color(border);
+  border-radius: t.radius($radius);
+  @if $shadow {
+    box-shadow: $shadow t.color(shade);
+  } @else {
+    box-shadow: none;
+  }
+}
+
+@mixin secondary-button($radius: md) {
+  background-color: t.color(secondary);
+  color: t.color(fg);
+  border: 1px solid t.color(border);
+  border-radius: t.radius($radius);
+  box-shadow: none;
+  transition-duration: t.duration(popover);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+
+  &:active,
+  &:checked {
+    background-color: t.color(active-sel);
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px t.color(ring);
+  }
+
+  &:insensitive {
+    color: t.color(muted-fg);
+    background-color: t.color(secondary);
+  }
+}
+
+@mixin primary-button($radius: md) {
+  background-color: t.color(primary);
+  color: t.color(primary-fg);
+  border: 1px solid t.color(primary);
+  border-radius: t.radius($radius);
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(primary);
+    color: t.color(primary-fg);
+    box-shadow: inset 0 0 0 100px t.translucent(primary-fg, 0.08);
+  }
+
+  &:active {
+    box-shadow: inset 0 0 0 100px t.translucent(bg, 0.12);
+  }
+}
+
+@mixin flat-button($radius: sm) {
+  background-color: transparent;
+  color: t.color(fg);
+  border: 1px solid transparent;
+  border-radius: t.radius($radius);
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  &:active,
+  &:checked {
+    background-color: t.color(active-sel);
+  }
+}
+
+@mixin text-entry {
+  background-color: t.color(input);
+  color: t.color(fg);
+  border: 1px solid t.color(border);
+  border-radius: t.radius(md);
+  box-shadow: none;
+  selection-background-color: t.color(accent);
+  selected-color: t.color(fg);
+  caret-color: t.color(fg);
+
+  &:hover {
+    background-color: t.color(input);
+    border-color: t.color(ring);
+  }
+
+  &:focus {
+    background-color: t.color(input);
+    border-color: t.color(ring);
+    box-shadow: inset 0 0 0 1px t.color(ring);
+  }
+
+  StLabel.hint-text {
+    color: t.color(muted-fg);
+  }
+}
+
+@mixin menu-row($height: 34px) {
+  min-height: $height - 10px;
+  padding: 5px 10px;
+  border-radius: t.radius(sm);
+  color: t.color(fg);
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: t.color(hover);
+    color: t.color(fg);
+  }
+
+  &:checked {
+    background-color: t.color(active-sel);
+  }
+
+  &:insensitive {
+    color: t.color(muted-fg);
+  }
+}

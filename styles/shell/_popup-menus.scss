@@ -1,0 +1,56 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.popup-menu-boxpointer {
+  -arrow-rise: 6px;
+}
+
+.popup-menu {
+  min-width: 200px;
+  color: t.color(fg);
+}
+
+.popup-menu-content {
+  @include m.surface(popover, lg, 0 6px 18px);
+  padding: 6px;
+}
+
+.popup-menu-item {
+  @include m.menu-row;
+  spacing: 12px;
+
+  &:checked {
+    background-color: t.color(active-sel);
+    border-radius: t.radius(sm) t.radius(sm) 0 0;
+    font-weight: 600;
+  }
+}
+
+.popup-sub-menu {
+  background-color: t.color(muted);
+  border-radius: 0 0 t.radius(sm) t.radius(sm);
+  box-shadow: none;
+
+  .popup-menu-item:hover,
+  .popup-menu-item:focus {
+    background-color: t.color(hover);
+  }
+}
+
+.popup-inactive-menu-item {
+  color: t.color(muted-fg);
+}
+
+.popup-menu-ornament,
+.popup-menu-icon {
+  icon-size: 16px;
+}
+
+.popup-separator-menu-item {
+  padding: 4px 6px;
+}
+
+.popup-separator-menu-item-separator {
+  height: 1px;
+  background-color: t.color(border);
+}

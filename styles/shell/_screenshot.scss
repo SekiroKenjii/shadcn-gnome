@@ -1,0 +1,148 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.screenshot-ui-panel {
+  @include m.surface(popover, xl, 0 12px 32px);
+  padding: 14px 16px;
+  spacing: 16px;
+}
+
+.screenshot-ui-close-button {
+  padding: 6px;
+  border-radius: t.radius(full);
+  border: 1px solid t.color(border);
+  background-color: t.color(popover);
+  color: t.color(fg);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+}
+
+.screenshot-ui-type-button {
+  min-width: 66px;
+  min-height: 50px;
+  padding: 4px;
+  border-radius: t.radius(sm);
+  border: none;
+  background-color: transparent;
+  color: t.color(muted-fg);
+  font-size: t.pt(11px);
+  font-weight: 500;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+    color: t.color(fg);
+  }
+
+  &:checked {
+    background-color: t.color(bg);
+    color: t.color(fg);
+    box-shadow: inset 0 0 0 1px t.color(border);
+  }
+}
+
+.screenshot-ui-capture-button {
+  width: 56px;
+  height: 56px;
+  padding: 3px;
+  border-radius: t.radius(full);
+  border: 2px solid t.color(fg);
+  background-color: transparent;
+
+  .screenshot-ui-capture-button-circle {
+    background-color: t.color(fg);
+    border-radius: t.radius(full);
+    transition-duration: t.duration(popover);
+  }
+
+  &:hover .screenshot-ui-capture-button-circle,
+  &:focus .screenshot-ui-capture-button-circle {
+    background-color: t.translucent(fg, 0.85);
+  }
+
+  &:cast .screenshot-ui-capture-button-circle {
+    background-color: t.color(destructive);
+  }
+}
+
+.screenshot-ui-shot-cast-container {
+  padding: 3px;
+  spacing: 2px;
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background-color: t.color(muted);
+}
+
+.screenshot-ui-shot-cast-button {
+  padding: 6px 9px;
+  border-radius: t.radius(sm);
+  border: none;
+  background-color: transparent;
+  color: t.color(muted-fg);
+
+  &:hover,
+  &:focus {
+    color: t.color(fg);
+    background-color: transparent;
+  }
+
+  &:checked {
+    background-color: t.color(bg);
+    color: t.color(fg);
+    box-shadow: inset 0 0 0 1px t.color(border);
+  }
+}
+
+.screenshot-ui-show-pointer-button {
+  padding: 9px;
+  @include m.secondary-button(md);
+
+  &:checked {
+    background-color: t.color(active-sel);
+  }
+}
+
+.screenshot-ui-area-indicator-shade {
+  background-color: t.color(selection-scrim);
+}
+
+.screenshot-ui-area-selector .screenshot-ui-area-indicator-selection {
+  border: 1px solid t.color(fg);
+}
+
+.screenshot-ui-area-selector-handle {
+  border-radius: t.radius(full);
+  background-color: t.color(fg);
+  box-shadow: 0 1px 3px t.color(shade);
+}
+
+.screenshot-ui-window-selector-window-border {
+  border-radius: t.radius(xl);
+  border: 2px solid transparent;
+}
+
+.screenshot-ui-window-selector-window:hover .screenshot-ui-window-selector-window-border {
+  border-color: t.translucent(fg, 0.5);
+}
+
+.screenshot-ui-window-selector-window:checked .screenshot-ui-window-selector-window-border {
+  border-color: t.color(fg);
+  background-color: t.translucent(fg, 0.08);
+}
+
+.screenshot-ui-window-selector-check {
+  border-radius: t.radius(full);
+  background-color: t.color(fg);
+  color: t.color(bg);
+}
+
+.screenshot-ui-tooltip {
+  padding: 4px 10px;
+  border-radius: t.radius(sm);
+  background-color: t.color(inverse-bg);
+  color: t.color(inverse-fg);
+  font-size: t.pt(12px);
+  font-weight: 500;
+}

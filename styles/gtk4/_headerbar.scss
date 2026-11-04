@@ -1,0 +1,55 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+headerbar {
+  min-height: 46px;
+}
+
+windowcontrols > button,
+windowcontrols > button:not(.flat):not(.osd):not(.card) {
+  min-width: 24px;
+  min-height: 24px;
+  margin: 0 3px;
+  padding: 0;
+  border: none;
+  border-radius: t.radius(sm);
+  background-color: v.token(secondary);
+  color: v.token(fg);
+}
+
+windowcontrols > button > image {
+  background: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+windowcontrols > button:hover {
+  background-color: v.token(hover);
+}
+
+windowcontrols > button:active {
+  background-color: v.token(active-sel);
+}
+
+tabbar .box {
+  background-color: v.token(headerbar);
+  border-bottom: 1px solid v.token(border);
+  box-shadow: none;
+}
+
+tabbar tab {
+  min-height: 30px;
+  margin: 4px 2px;
+  border-radius: t.radius(sm);
+  color: v.token(muted-fg);
+}
+
+tabbar tab:hover {
+  background-color: v.token(hover);
+}
+
+tabbar tab:selected {
+  background-color: v.token(bg);
+  color: v.token(fg);
+  box-shadow: 0 0 0 1px v.token(border);
+}

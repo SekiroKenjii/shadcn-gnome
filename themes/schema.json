@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SekiroKenjii/shadcn-gnome/themes/schema.json",
+  "title": "shadcn-gnome theme",
+  "type": "object",
+  "required": ["id", "label", "radius", "wallpaper", "fonts", "schemes"],
+  "additionalProperties": false,
+  "$defs": {
+    "hex": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+    "colors": {
+      "type": "object",
+      "required": [
+        "bg",
+        "fg",
+        "card",
+        "popover",
+        "headerbar",
+        "sidebar",
+        "secondarySidebar",
+        "primary",
+        "primaryFg",
+        "accentText",
+        "secondary",
+        "hover",
+        "activeSel",
+        "accent",
+        "muted",
+        "mutedFg",
+        "border",
+        "input",
+        "ring",
+        "destructive",
+        "destructiveTint",
+        "success",
+        "warning"
+      ],
+      "additionalProperties": { "$ref": "#/$defs/hex" }
+    },
+    "terminal": {
+      "type": "object",
+      "required": ["bg", "fg", "cursor", "black", "brBlack"],
+      "additionalProperties": { "$ref": "#/$defs/hex" }
+    },
+    "panel": {
+      "type": "object",
+      "properties": {
+        "panel": { "$ref": "#/$defs/hex" },
+        "panelFg": { "$ref": "#/$defs/hex" },
+        "panelBorder": { "$ref": "#/$defs/hex" },
+        "panelHover": { "$ref": "#/$defs/hex" },
+        "panelActive": { "$ref": "#/$defs/hex" }
+      },
+      "additionalProperties": false
+    },
+    "scheme": {
+      "type": "object",
+      "required": ["colors", "terminal"],
+      "additionalProperties": false,
+      "properties": {
+        "colors": { "$ref": "#/$defs/colors" },
+        "terminal": { "$ref": "#/$defs/terminal" },
+        "darkPanel": { "$ref": "#/$defs/panel" }
+      }
+    }
+  },
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "label": { "type": "string" },
+    "description": { "type": "string" },
+    "source": { "type": "string" },
+    "radius": { "type": "number", "minimum": 0, "maximum": 24 },
+    "strokeJoin": { "enum": ["round", "miter"] },
+    "wallpaper": { "enum": ["dots", "grid", "spotlight"] },
+    "fonts": {
+      "type": "object",
+      "required": ["interface", "monospace"],
+      "properties": {
+        "interface": { "type": "string" },
+        "document": { "type": "string" },
+        "monospace": { "type": "string" }
+      }
+    },
+    "schemes": {
+      "type": "object",
+      "required": ["dark", "light"],
+      "additionalProperties": false,
+      "properties": {
+        "dark": { "$ref": "#/$defs/scheme" },
+        "light": { "$ref": "#/$defs/scheme" }
+      }
+    }
+  }
+}

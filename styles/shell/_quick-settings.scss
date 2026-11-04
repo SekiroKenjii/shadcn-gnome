@@ -1,0 +1,179 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.quick-settings {
+  @include m.surface(card, lg, 0 6px 18px);
+  padding: 14px;
+
+  .icon-button {
+    padding: 9px;
+    @include m.secondary-button(md);
+  }
+}
+
+.quick-settings-grid {
+  spacing-rows: 8px;
+  spacing-columns: 8px;
+}
+
+.quick-toggle,
+.quick-toggle-has-menu {
+  min-height: 44px;
+  border-radius: t.radius(md);
+}
+
+.quick-toggle {
+  @include m.secondary-button(md);
+  font-size: t.pt(13px);
+
+  &:checked,
+  &:checked:hover,
+  &:checked:focus,
+  &:checked:active {
+    background-color: t.color(primary);
+    border-color: t.color(primary);
+    color: t.color(primary-fg);
+  }
+
+  .quick-toggle-title {
+    font-weight: 600;
+  }
+
+  .quick-toggle-subtitle {
+    font-size: t.pt(11.5px);
+    font-weight: normal;
+  }
+
+  .quick-toggle-icon {
+    icon-size: 16px;
+  }
+}
+
+.quick-toggle-has-menu {
+  .quick-toggle {
+    &:ltr {
+      border-radius: t.radius(md) 0 0 t.radius(md);
+      border-right-width: 0;
+    }
+
+    &:rtl {
+      border-radius: 0 t.radius(md) t.radius(md) 0;
+      border-left-width: 0;
+    }
+
+    &:ltr:last-child,
+    &:rtl:last-child {
+      border-radius: t.radius(md);
+      border-width: 1px;
+    }
+  }
+
+  .quick-toggle-menu-button {
+    @include m.secondary-button(md);
+    padding: 6px 10px;
+
+    &:ltr {
+      border-radius: 0 t.radius(md) t.radius(md) 0;
+      border-left-width: 0;
+    }
+
+    &:rtl {
+      border-radius: t.radius(md) 0 0 t.radius(md);
+      border-right-width: 0;
+    }
+
+    &:checked,
+    &:checked:hover,
+    &:checked:focus,
+    &:checked:active {
+      background-color: t.color(primary);
+      border-color: t.color(primary);
+      color: t.color(primary-fg);
+    }
+  }
+
+  .quick-toggle-separator {
+    width: 1px;
+    background-color: t.color(border);
+  }
+
+  &:checked .quick-toggle-separator {
+    background-color: t.color(divider-on-primary);
+  }
+}
+
+.quick-slider {
+  .icon-button,
+  .icon-button:hover {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .slider-bin {
+    padding: 6px 4px;
+    border-radius: t.radius(sm);
+
+    &:focus {
+      box-shadow: inset 0 0 0 2px t.color(ring);
+    }
+  }
+}
+
+.quick-toggle-menu {
+  @include m.surface(popover, lg, null);
+  padding: 12px;
+  margin: 8px 0 0;
+
+  .header {
+    spacing-rows: 2px;
+    spacing-columns: 12px;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid t.color(border);
+
+    .icon {
+      icon-size: 16px;
+      padding: 9px;
+      border-radius: t.radius(md);
+      background-color: t.color(primary);
+      color: t.color(primary-fg);
+
+      &.active {
+        background-color: t.color(primary);
+        color: t.color(primary-fg);
+      }
+    }
+
+    .title {
+      font-size: t.pt(15px);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: t.pt(12px);
+      color: t.color(muted-fg);
+    }
+  }
+
+  .popup-menu-item {
+    @include m.menu-row;
+  }
+}
+
+.quick-settings-system-item {
+  .icon-button {
+    min-width: 18px;
+  }
+
+  .power-item {
+    min-height: 0;
+    padding: 0 12px;
+    border-radius: t.radius(md);
+    font-weight: 600;
+    @include m.secondary-button(md);
+  }
+}
+
+.background-app-item .icon-button {
+  @include m.flat-button(sm);
+}

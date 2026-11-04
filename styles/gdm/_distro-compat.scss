@@ -1,0 +1,41 @@
+@use '../lib/tokens' as t;
+
+// The greeter fragment is appended inside the distro stylesheet, so it only wins
+// where its selectors are at least as specific as the distro's. Yaru draws the
+// user tile, password field and shutdown dialog focus with longer selectors.
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:selected,
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:focus,
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:active:focus {
+  background-color: t.color(hover);
+  box-shadow: inset 0 0 0 2px t.color(ring);
+  color: t.color(fg);
+}
+
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item .user-icon {
+  border: 2px solid t.color(border);
+}
+
+.login-dialog .login-dialog-prompt-entry,
+.login-dialog .login-dialog-prompt-entry:hover,
+.login-dialog .login-dialog-prompt-entry:focus {
+  background-color: t.color(input);
+  color: t.color(fg);
+  border-radius: t.radius(md);
+}
+
+.login-dialog .login-dialog-prompt-entry:focus {
+  box-shadow: inset 0 0 0 1px t.color(ring);
+}
+
+.end-session-dialog .button:focus,
+.end-session-dialog .modal-dialog-linked-button:focus,
+.modal-dialog .modal-dialog-button:focus {
+  box-shadow: inset 0 0 0 2px t.color(ring);
+}
+
+.end-session-dialog .modal-dialog-linked-button:default,
+.end-session-dialog .modal-dialog-button:default {
+  background-color: t.color(primary);
+  border-color: t.color(primary);
+  color: t.color(primary-fg);
+}
