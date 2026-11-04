@@ -1,0 +1,42 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.osd-window {
+  @include m.surface(popover, lg, 0 8px 24px);
+  min-height: 52px;
+  padding: 0 18px;
+  spacing: 14px;
+  font-size: t.pt(13px);
+  font-feature-settings: "tnum";
+
+  StIcon {
+    icon-size: 16px;
+    color: t.color(fg);
+  }
+
+  StLabel {
+    color: t.color(fg);
+  }
+
+  .level {
+    height: 6px;
+    -barlevel-height: 6px;
+    -barlevel-background-color: t.color(muted);
+    -barlevel-active-background-color: t.color(fg);
+    -barlevel-overdrive-color: t.color(destructive);
+    -barlevel-overdrive-separator-width: 2px;
+  }
+}
+
+.osd-monitor-label,
+.osd-break-countdown-label {
+  @include m.surface(popover, lg, 0 8px 24px);
+  font-size: t.pt(36px);
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
+.pad-osd-window,
+.resize-popup {
+  @include m.surface(popover, lg, 0 8px 24px);
+}

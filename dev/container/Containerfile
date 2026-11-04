@@ -1,0 +1,18 @@
+# GNOME development container: latest Fedora GNOME stack plus every app and
+# tool the dev scripts use. Works with toolbox or distrobox (dev/toolbox.sh)
+# and with plain podman for the headless capture in CI.
+FROM registry.fedoraproject.org/fedora-toolbox:latest
+
+RUN dnf install -y --setopt=install_weak_deps=False \
+      gnome-shell mutter mutter-devkit gnome-shell-extension-common \
+      gjs dbus-daemon dbus-tools bubblewrap \
+      gtk4-devel-tools gtk3-devel libadwaita-demos \
+      nautilus gnome-control-center ptyxis gnome-text-editor \
+      gsettings-desktop-schemas dconf glib2-devel gtk-update-icon-cache \
+      librsvg2 mesa-dri-drivers fontconfig xdg-user-dirs \
+      nodejs npm ShellCheck git \
+    && dnf clean all
+
+ENV NO_AT_BRIDGE=1
+LABEL org.opencontainers.image.title="shadcn-gnome dev" \
+      org.opencontainers.image.description="GNOME Shell, GTK reference apps and build tools for shadcn-gnome"

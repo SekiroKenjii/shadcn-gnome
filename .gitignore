@@ -1,4 +1,4 @@
 node_modules/
-.work/
 build/
+.work/
 *.local.json

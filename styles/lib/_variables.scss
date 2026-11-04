@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use 'tokens';
+
+// GTK4 widgets read colors through CSS custom properties so one stylesheet
+// serves both color schemes.
+@function token($name) {
+  @if not map.has-key(tokens.palette-of(light), $name) {
+    @error "unknown color token '#{$name}'";
+  }
+  @return var(--shadcn-#{$name});
+}
+
+@mixin declare-palette($scheme) {
+  @each $name, $value in tokens.palette-of($scheme) {
+    --shadcn-#{$name}: #{tokens.literal($value)};
+  }
+}

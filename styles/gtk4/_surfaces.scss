@@ -1,0 +1,58 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+.card,
+button.card {
+  border-radius: t.radius(md);
+  border: 1px solid v.token(border);
+  background-color: v.token(card);
+  box-shadow: none;
+}
+
+.card.activatable:hover,
+button.card:hover {
+  background-color: v.token(hover);
+}
+
+.view.frame,
+frame > border {
+  border-radius: t.radius(md);
+  border-color: v.token(border);
+}
+
+avatar {
+  background-image: none;
+  background-color: v.token(muted);
+  color: v.token(fg);
+  box-shadow: inset 0 0 0 1px v.token(border);
+  font-weight: 600;
+}
+
+avatar.image {
+  box-shadow: none;
+}
+
+.keycap,
+shortcut > .keycap {
+  min-width: 10px;
+  min-height: 20px;
+  padding: 0 6px;
+  border: 1px solid v.token(border);
+  border-bottom-width: 2px;
+  border-radius: t.radius(sm);
+  background-color: v.token(muted);
+  box-shadow: none;
+  color: v.token(fg);
+  font-family: t.$font-monospace, monospace;
+  font-size: 75%;
+  font-weight: 500;
+}
+
+.osd.toolbar,
+.app-notification {
+  border-radius: t.radius(lg);
+}
+
+infobar > revealer > box {
+  border-bottom: 1px solid v.token(border);
+}

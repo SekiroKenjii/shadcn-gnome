@@ -1,0 +1,95 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.icon-grid {
+  row-spacing: 8px;
+  column-spacing: 4px;
+}
+
+// Upstream paints overview tiles with the always-dark "system" colors; the
+// design follows the active scheme instead.
+.overview-tile,
+.grid-search-result,
+.list-search-result,
+.search-provider-icon {
+  background-color: transparent;
+  color: t.color(fg);
+}
+
+.icon-grid .overview-tile,
+.app-folder {
+  padding: 12px 6px 10px;
+  border-radius: t.radius(lg);
+  font-size: t.pt(13px);
+  font-weight: 500;
+  color: t.color(fg);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px t.color(ring);
+  }
+
+  &:active,
+  &:checked {
+    background-color: t.color(active-sel);
+  }
+
+  .overview-icon {
+    spacing: 10px;
+  }
+}
+
+.app-folder {
+  background-color: t.color(muted);
+  border: 1px solid t.color(border);
+}
+
+.app-grid-running-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: t.radius(full);
+  background-color: t.color(fg);
+}
+
+.app-folder-dialog {
+  @include m.surface(popover, xl, 0 16px 40px);
+  padding: 16px;
+}
+
+.rename-folder-popup .popup-menu-content {
+  padding: 8px;
+}
+
+.page-indicator-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: t.radius(sm);
+  background-color: t.color(muted-fg);
+}
+
+.page-indicator:checked .page-indicator-icon {
+  background-color: t.color(fg);
+}
+
+.page-navigation-arrow {
+  padding: 12px;
+  border-radius: t.radius(full);
+  border: 1px solid t.color(border);
+  background-color: t.color(popover);
+  color: t.color(fg);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+}
+
+.system-action-icon {
+  border-radius: t.radius(xxl);
+  background-color: t.color(card);
+  border: 1px solid t.color(border);
+  color: t.color(fg);
+}

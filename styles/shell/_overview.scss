@@ -1,0 +1,188 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+#overviewGroup {
+  background-color: t.color(bg);
+}
+
+.search-entry {
+  width: 400px;
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: t.pt(14px);
+  @include m.text-entry;
+  background-color: t.color(card);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(card);
+  }
+
+  .search-entry-icon {
+    icon-size: 16px;
+    color: t.color(muted-fg);
+  }
+}
+
+#searchResultsContent {
+  spacing: 16px;
+}
+
+.search-section-content {
+  @include m.surface(card, xl, null);
+  padding: 12px;
+  spacing: 4px;
+}
+
+.search-statustext {
+  font-size: t.pt(19px);
+  font-weight: 600;
+  color: t.color(muted-fg);
+}
+
+.list-search-result,
+.grid-search-result {
+  border-radius: t.radius(lg);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  &:selected,
+  &:active {
+    background-color: t.color(accent);
+  }
+}
+
+.list-search-result-title {
+  font-weight: 600;
+}
+
+.list-search-result-description {
+  color: t.color(muted-fg);
+}
+
+.search-provider-icon {
+  border-radius: t.radius(lg);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+}
+
+.workspace-thumbnails {
+  spacing: 10px;
+  padding: 8px 0;
+}
+
+.workspace-thumbnail {
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+}
+
+.workspace-thumbnail-indicator {
+  border: 2px solid t.color(fg);
+  border-radius: t.radius(md);
+  padding: 2px;
+}
+
+.workspace-background {
+  border-radius: t.radius(xl);
+  box-shadow: 0 20px 60px t.color(shade);
+}
+
+.window-caption {
+  padding: 4px 10px;
+  border-radius: t.radius(sm);
+  border: 1px solid t.color(border);
+  background-color: t.color(popover);
+  color: t.color(fg);
+  font-size: t.pt(12.5px);
+  font-weight: 500;
+}
+
+.window-close {
+  padding: 4px;
+  border-radius: t.radius(full);
+  border: 1px solid t.color(border);
+  background-color: t.color(popover);
+  color: t.color(fg);
+  box-shadow: 0 4px 12px t.color(shade);
+
+  &:hover {
+    background-color: t.color(hover);
+  }
+
+  &:active {
+    background-color: t.color(active-sel);
+  }
+}
+
+.window-picker .window-clone-border {
+  border: 2px solid t.color(ring);
+  border-radius: t.radius(xl);
+}
+
+#dash {
+  padding: 0 0 22px;
+  font-size: t.pt(12px);
+
+  .dash-background {
+    @include m.surface(popover, xl, 0 10px 30px);
+    padding: 8px;
+  }
+
+  .dash-item-container > StWidget,
+  .show-apps {
+    padding: 2px;
+  }
+
+  .show-apps,
+  .show-apps .overview-icon {
+    color: t.color(fg);
+  }
+
+  .overview-tile,
+  .overview-tile .overview-icon,
+  .show-apps .overview-icon {
+    border-radius: t.radius(tile);
+    background-color: transparent;
+
+    &:hover,
+    &:focus {
+      background-color: t.color(hover);
+    }
+
+    &:active,
+    &:checked {
+      background-color: t.color(active-sel);
+    }
+  }
+
+  .dash-separator {
+    width: 1px;
+    margin: 0 4px 8px;
+    background-color: t.color(border);
+  }
+
+  .app-grid-running-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: t.radius(full);
+    background-color: t.color(fg);
+    margin-bottom: 2px;
+  }
+}
+
+.dash-label {
+  padding: 4px 10px;
+  border-radius: t.radius(sm);
+  border: 1px solid t.color(border);
+  background-color: t.color(popover);
+  color: t.color(fg);
+  font-size: t.pt(12.5px);
+  font-weight: 500;
+  -y-offset: 8px;
+}

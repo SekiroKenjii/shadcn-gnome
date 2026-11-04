@@ -1,0 +1,130 @@
+{
+  "grid": 32,
+  "xcursorSizes": [24, 32, 48, 64],
+  "spinner": { "frames": 12, "delayMs": 60 },
+  "paths": {
+    "arrow": "M6 4L6 25L11 20.5L14.5 28L18 26.5L14.6 19L21 19Z",
+    "hand": "M11 6a2 2 0 0 1 4 0V13a2 2 0 0 1 3.5 .5a2 2 0 0 1 3.5 1a2 2 0 0 1 3 1.5V21c0 4-2.5 7-7 7h-2c-3 0-4.5-1.5-6-3.5L7 20a1.8 1.8 0 0 1 2.8-2.2L11 19Z",
+    "handDetail": "M15 13v4 M18.5 13.5v3.5 M22 14.5v3",
+    "ibeam": "M11 5h4l1 1 1-1h4v2.2h-3.2l-.8.8v15.99l.8.8H21V27h-4l-1-1-1 1h-4v-2.2h3.2l.8-.8V8l-.8-.8H11Z",
+    "spinner": "M21 12a9 9 0 1 1-6.219-8.56"
+  },
+  "cursors": [
+    { "name": "default", "fill": "arrow", "hotspot": [6, 4], "aliases": ["left_ptr", "arrow", "top_left_arrow", "left_arrow", "right_ptr"] },
+    {
+      "name": "pointer",
+      "fill": "hand",
+      "detail": "handDetail",
+      "hotspot": [13, 4],
+      "aliases": ["hand2", "hand1", "hand", "pointing_hand", "9d800788f1b08800ae810202380a0822", "e29285e634086352946a0e7090d73106"]
+    },
+    { "name": "text", "fill": "ibeam", "hotspot": [16, 16], "aliases": ["xterm", "ibeam"] },
+    { "name": "vertical-text", "fill": "ibeam", "rotate": 90, "hotspot": [16, 16], "aliases": [] },
+    { "name": "crosshair", "line": "M12 1v8 M12 15v8 M1 12h8 M15 12h8", "hotspot": [16, 16], "aliases": ["cross", "tcross", "cross_reverse", "diamond_cross"] },
+    { "name": "cell", "line": "M12 4v16 M4 12h16", "hotspot": [16, 16], "aliases": ["plus"] },
+    {
+      "name": "move",
+      "line": "M12 2v20 M15 19l-3 3-3-3 M19 9l3 3-3 3 M2 12h20 M5 9l-3 3 3 3 M9 5l3-3 3 3",
+      "hotspot": [16, 16],
+      "aliases": ["fleur", "all-scroll", "size_all", "4498f0e0c1937ffe01fd06f973665830", "9081237383d90e509aa00f00170e968f"]
+    },
+    {
+      "name": "grab",
+      "line": "M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2 M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2 M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8 M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15",
+      "hotspot": [16, 14],
+      "aliases": ["openhand"]
+    },
+    {
+      "name": "grabbing",
+      "line": "M18 11.5V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1.4 M14 10V8a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2 M10 9.9V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v5 M6 14a2 2 0 0 0-2-2a2 2 0 0 0-2 2 M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8 2 2 0 1 1 4 0",
+      "hotspot": [16, 16],
+      "aliases": ["closedhand", "dnd-move", "dnd-none"]
+    },
+    { "name": "wait", "line": "spinner", "spin": true, "hotspot": [16, 16], "aliases": ["watch", "0426c94ea35c87780ff01dc239897213"] },
+    {
+      "name": "progress",
+      "fill": "arrow",
+      "small": true,
+      "badge": "spinner",
+      "spin": true,
+      "hotspot": [6, 4],
+      "aliases": ["left_ptr_watch", "half-busy", "3ecb610c1bf2410f44200f48c40d3599", "08e8e1c95fe2fc01f976f1e063a24ccd"]
+    },
+    {
+      "name": "help",
+      "fill": "arrow",
+      "small": true,
+      "badge": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01",
+      "hotspot": [6, 4],
+      "aliases": ["question_arrow", "whats_this", "left_ptr_help", "dnd-ask", "5c6cd98b3f3ebcb1f9c7f1c204630408", "d9ce0ab605698f320427677b458ad60b"]
+    },
+    {
+      "name": "not-allowed",
+      "fill": "arrow",
+      "small": true,
+      "badge": "M4.929 4.929 19.07 19.071 M4 12a8 8 0 1 0 16 0a8 8 0 1 0 -16 0",
+      "hotspot": [6, 4],
+      "aliases": ["crossed_circle", "forbidden", "no-drop", "circle", "03b6e0fcb3499374a867c041f52298f0"]
+    },
+    {
+      "name": "copy",
+      "fill": "arrow",
+      "small": true,
+      "badge": "M5 12h14 M12 5v14",
+      "hotspot": [6, 4],
+      "aliases": ["dnd-copy", "1081e37283d90000800003c07f3ef6bf", "6407b0e94181790501fd1e167b474872"]
+    },
+    {
+      "name": "alias",
+      "fill": "arrow",
+      "small": true,
+      "badge": "M7 7h10v10 M7 17 17 7",
+      "hotspot": [6, 4],
+      "aliases": ["link", "dnd-link", "3085a0e285430894940527032f8b26df", "640fb0e74195791501fd1ed57b41487f"]
+    },
+    { "name": "context-menu", "fill": "arrow", "small": true, "badge": "M6 7h12 M6 12h12 M6 17h12", "hotspot": [6, 4], "aliases": [] },
+    {
+      "name": "ew-resize",
+      "line": "M18 8l4 4-4 4 M2 12h20 M6 8l-4 4 4 4",
+      "hotspot": [16, 16],
+      "aliases": ["sb_h_double_arrow", "h_double_arrow", "size_hor", "e-resize", "w-resize", "left_side", "right_side"]
+    },
+    {
+      "name": "ns-resize",
+      "line": "M12 2v20 M8 18l4 4 4-4 M8 6l4-4 4 4",
+      "hotspot": [16, 16],
+      "aliases": ["sb_v_double_arrow", "v_double_arrow", "size_ver", "n-resize", "s-resize", "top_side", "bottom_side"]
+    },
+    {
+      "name": "nwse-resize",
+      "line": "M19 13v6h-6 M5 11V5h6 M5 5l14 14",
+      "hotspot": [16, 16],
+      "aliases": ["bd_double_arrow", "size_fdiag", "nw-resize", "se-resize", "top_left_corner", "bottom_right_corner"]
+    },
+    {
+      "name": "nesw-resize",
+      "line": "M11 19H5v-6 M13 5h6v6 M19 5 5 19",
+      "hotspot": [16, 16],
+      "aliases": ["fd_double_arrow", "size_bdiag", "ne-resize", "sw-resize", "top_right_corner", "bottom_left_corner"]
+    },
+    {
+      "name": "col-resize",
+      "line": "M16 12h6 M8 12H2 M12 2v2 M12 8v2 M12 14v2 M12 20v2 M19 15l3-3-3-3 M5 9l-3 3 3 3",
+      "hotspot": [16, 16],
+      "aliases": ["split_h"]
+    },
+    {
+      "name": "row-resize",
+      "line": "M12 22v-6 M12 8V2 M4 12H2 M10 12H8 M16 12h-2 M22 12h-2 M15 19l-3 3-3-3 M15 5l-3-3-3 3",
+      "hotspot": [16, 16],
+      "aliases": ["split_v"]
+    },
+    {
+      "name": "zoom-in",
+      "line": "M3 11a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M21 21L16.65 16.65 M11 8L11 14 M8 11L14 11",
+      "hotspot": [15, 15],
+      "aliases": ["zoom_in"]
+    },
+    { "name": "zoom-out", "line": "M3 11a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M21 21L16.65 16.65 M8 11L14 11", "hotspot": [15, 15], "aliases": ["zoom_out"] }
+  ]
+}

@@ -1,0 +1,81 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+window.csd {
+  border-radius: t.radius(xl);
+}
+
+window.csd.maximized,
+window.csd.fullscreen,
+window.csd.tiled,
+window.csd.tiled-top,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-bottom {
+  border-radius: 0;
+}
+
+dialog.floating sheet,
+dialog.alert.floating sheet,
+window.dialog.message {
+  border-radius: t.radius(xl);
+  box-shadow: 0 0 0 1px v.token(border), 0 16px 40px v.token(shade);
+}
+
+dialog.alert .message-area .title-2,
+dialog.alert .heading {
+  font-size: 116%;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+dialog.alert .response-area > button.suggested {
+  background-color: v.token(primary);
+  border-color: v.token(primary);
+  color: v.token(primary-fg);
+}
+
+dialog.alert .response-area > button.destructive {
+  background-color: v.token(destructive);
+  border-color: v.token(destructive);
+  color: v.token(destructive-fg);
+}
+
+banner > revealer > widget {
+  background-color: v.token(muted);
+  color: v.token(fg);
+  border-bottom: 1px solid v.token(border);
+  box-shadow: none;
+}
+
+toast {
+  padding: 6px 6px 6px 14px;
+  border-radius: t.radius(lg);
+  background-color: v.token(inverse-bg);
+  color: v.token(inverse-fg);
+  box-shadow: 0 6px 18px v.token(shade);
+}
+
+toast > button,
+toast > button:not(.flat):not(.osd):not(.card) {
+  border: none;
+  border-radius: t.radius(sm);
+  background-color: v.token(inverse-fg);
+  color: v.token(inverse-bg);
+  font-weight: 500;
+}
+
+toast > button.circular.flat {
+  background-color: transparent;
+  color: v.token(inverse-fg);
+}
+
+statuspage .title {
+  font-size: 130%;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+statuspage .description {
+  color: v.token(muted-fg);
+}

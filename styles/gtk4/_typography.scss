@@ -1,0 +1,52 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+.title-1 {
+  font-size: 191%;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.title-2 {
+  font-size: 150%;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.title-3 {
+  font-size: 130%;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.title-4 {
+  font-size: 116%;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.heading {
+  font-weight: 600;
+}
+
+.caption {
+  font-size: 82%;
+}
+
+.caption-heading {
+  font-size: 82%;
+  font-weight: 600;
+}
+
+.monospace {
+  font-family: t.$font-monospace, monospace;
+}
+
+.numeric {
+  font-feature-settings: "tnum";
+}
+
+.dim-label {
+  color: v.token(muted-fg);
+  opacity: 1;
+}

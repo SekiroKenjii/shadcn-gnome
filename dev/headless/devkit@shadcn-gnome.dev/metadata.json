@@ -1,0 +1,7 @@
+{
+  "uuid": "devkit@shadcn-gnome.dev",
+  "name": "shadcn-gnome devkit",
+  "description": "Development-only: unlocks Shell.Eval and the screenshot D-Bus API inside a throwaway sandbox session. Never install on a real desktop.",
+  "shell-version": ["46", "47", "48", "49", "50", "51"],
+  "session-modes": ["user", "unlock-dialog", "gdm"]
+}

@@ -1,0 +1,59 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use 'shadcn:tokens' as tokens;
+
+$scheme: tokens.$scheme;
+$is-dark: tokens.$scheme == dark;
+$font-interface: tokens.$font-interface;
+$font-monospace: tokens.$font-monospace;
+$easing: tokens.$easing;
+$options: tokens.$options;
+
+@function color($name) {
+  @if not map.has-key(tokens.$palette, $name) {
+    @error "unknown color token '#{$name}'";
+  }
+  @return map.get(tokens.$palette, $name);
+}
+
+@function color-in($scheme, $name) {
+  @return literal(map.get(map.get(tokens.$palettes, $scheme), $name));
+}
+
+// Renders a color exactly as written in the theme, for use inside interpolation.
+@function literal($value) {
+  @return string.unquote('' + $value);
+}
+
+@function palette-of($scheme) {
+  @return map.get(tokens.$palettes, $scheme);
+}
+
+@function radius($name) {
+  @if not map.has-key(tokens.$radius, $name) {
+    @error "unknown radius token '#{$name}'";
+  }
+  @return map.get(tokens.$radius, $name);
+}
+
+@function duration($name) {
+  @return map.get(tokens.$motion, $name);
+}
+
+@function option($name, $fallback: null) {
+  @if map.has-key(tokens.$options, $name) {
+    @return map.get(tokens.$options, $name);
+  }
+  @return $fallback;
+}
+
+// Converts a design pixel size to points so text follows the text-scaling factor.
+@function pt($size) {
+  @return math.div(math.round(math.div($size, 1px) * 75), 100) * 1pt;
+}
+
+@function translucent($name, $alpha) {
+  @return rgba(color($name), $alpha);
+}

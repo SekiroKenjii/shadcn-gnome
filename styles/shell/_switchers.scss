@@ -1,0 +1,87 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.switcher-popup {
+  padding: 8px;
+  spacing: 16px;
+}
+
+.switcher-list {
+  @include m.surface(card, xl, 0 12px 32px);
+  padding: 14px;
+
+  .switcher-list-item-container {
+    spacing: 8px;
+  }
+
+  .item-box {
+    padding: 10px;
+    border-radius: t.radius(lg);
+    border: 1px solid transparent;
+    background-color: transparent;
+    font-size: t.pt(12.5px);
+    font-weight: 500;
+
+    &:outlined {
+      border-color: t.color(ring);
+    }
+
+    &:hover {
+      background-color: t.color(hover);
+    }
+
+    &:selected {
+      background-color: t.color(accent);
+      color: t.color(fg);
+      box-shadow: inset 0 0 0 1px t.color(ring);
+    }
+  }
+
+  .thumbnail-box {
+    padding: 2px;
+    spacing: 4px;
+  }
+
+  .separator {
+    width: 1px;
+    background-color: t.color(border);
+  }
+}
+
+.switcher-arrow {
+  color: t.color(muted-fg);
+
+  &:highlighted {
+    color: t.color(fg);
+  }
+}
+
+.input-source-switcher-symbol {
+  font-family: t.$font-monospace;
+  font-size: t.pt(22px);
+  font-weight: 600;
+  width: 64px;
+  height: 64px;
+  border-radius: t.radius(md);
+}
+
+.cycler-highlight {
+  border: 2px solid t.color(fg);
+  border-radius: t.radius(xl);
+}
+
+.workspace-switcher-group {
+  padding: 12px;
+}
+
+.workspace-switcher {
+  @include m.surface(card, xl, 0 12px 32px);
+  padding: 12px;
+  spacing: 8px;
+}
+
+.ws-switcher-indicator {
+  border-radius: t.radius(md);
+  border: 2px solid t.color(fg);
+  background-color: transparent;
+}

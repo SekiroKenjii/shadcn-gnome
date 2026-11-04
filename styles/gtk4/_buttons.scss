@@ -1,0 +1,168 @@
+@use 'sass:list';
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+$flat-contexts: (
+  'headerbar button',
+  '.toolbar button',
+  'searchbar button',
+  'actionbar button',
+  '.osd button',
+  'calendar button',
+  'tabbar tab button',
+  'menubutton.flat > button',
+  'splitbutton.flat > button',
+  'splitbutton.flat > menubutton > button',
+  'dropdown.flat > button'
+);
+
+@function chromeless($state: '') {
+  $selectors: ();
+  @each $context in $flat-contexts {
+    $selectors: list.append($selectors, '#{$context}:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque)#{$state}', comma);
+  }
+  @return $selectors;
+}
+
+button {
+  border-radius: t.radius(md);
+  transition: background-color #{t.duration(popover)} #{t.$easing}, border-color #{t.duration(popover)} #{t.$easing};
+}
+
+button:not(.flat):not(.osd):not(.card) {
+  border: 1px solid v.token(border);
+  background-color: v.token(secondary);
+  color: v.token(fg);
+  box-shadow: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+button:not(.flat):not(.osd):not(.card):hover {
+  background-color: v.token(hover);
+}
+
+button:not(.flat):not(.osd):not(.card):active,
+button:not(.flat):not(.osd):not(.card):checked {
+  background-color: v.token(active-sel);
+}
+
+button.flat:hover {
+  background-color: v.token(hover);
+}
+
+button.flat:active,
+button.flat:checked {
+  background-color: v.token(active-sel);
+}
+
+#{chromeless()} {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+#{chromeless(':hover')} {
+  background-color: v.token(hover);
+}
+
+#{chromeless(':active')},
+#{chromeless(':checked')} {
+  background-color: v.token(active-sel);
+}
+
+button.suggested-action {
+  background-color: v.token(primary);
+  border-color: v.token(primary);
+  color: v.token(primary-fg);
+}
+
+button.suggested-action:hover {
+  background-color: v.token(primary);
+  filter: brightness(1.1);
+}
+
+button.suggested-action:active {
+  background-color: v.token(primary);
+  filter: brightness(0.88);
+}
+
+button.destructive-action {
+  background-color: v.token(destructive);
+  border-color: v.token(destructive);
+  color: v.token(destructive-fg);
+}
+
+button.destructive-action:hover {
+  background-color: v.token(destructive);
+  filter: brightness(1.1);
+}
+
+button.pill {
+  border-radius: t.radius(full);
+  padding: 6px 22px;
+}
+
+button.circular {
+  border-radius: t.radius(full);
+}
+
+button:focus-visible {
+  outline: 2px solid v.token(ring);
+  outline-offset: 2px;
+}
+
+.linked:not(.vertical) > button:not(:first-child),
+.linked:not(.vertical) > :not(:first-child) > button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+
+.linked:not(.vertical) > button:not(:last-child),
+.linked:not(.vertical) > :not(:last-child) > button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.linked.vertical > button:not(:first-child) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top-width: 0;
+}
+
+.linked.vertical > button:not(:last-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+// Split buttons in header bars read as two separate pills with a gap.
+headerbar splitbutton {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+headerbar splitbutton > separator {
+  background-color: transparent;
+  min-width: 0;
+}
+
+headerbar splitbutton > button:not(.suggested-action):not(.destructive-action),
+headerbar splitbutton > menubutton > button:not(.suggested-action):not(.destructive-action) {
+  background-color: v.token(secondary);
+  border: 1px solid v.token(border);
+  border-radius: t.radius(md);
+}
+
+headerbar splitbutton > button:not(.suggested-action):not(.destructive-action) {
+  margin-right: 4px;
+}
+
+columnview > header > button:not(.suggested-action):not(.destructive-action) {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: v.token(muted-fg);
+  font-weight: 600;
+}

@@ -1,0 +1,61 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+popover > contents,
+popover.background > contents {
+  border-radius: t.radius(lg);
+  background-color: v.token(popover);
+  color: v.token(fg);
+  box-shadow: 0 0 0 1px v.token(border), 0 6px 18px v.token(shade);
+}
+
+popover > arrow,
+popover.background > arrow {
+  background-color: v.token(popover);
+  border: 1px solid v.token(border);
+}
+
+popover.menu > contents {
+  padding: 4px;
+}
+
+popover.menu modelbutton,
+popover.menu listview > row,
+dropdown popover listview > row {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: t.radius(sm);
+}
+
+popover.menu modelbutton:hover,
+popover.menu modelbutton:selected,
+popover.menu listview > row:hover,
+popover.menu listview > row:selected,
+dropdown popover listview > row:hover {
+  background-color: v.token(hover);
+}
+
+popover.menu separator {
+  margin: 3px 6px;
+  background-color: v.token(border);
+}
+
+popover.menu accelerator {
+  color: v.token(muted-fg);
+  font-family: t.$font-monospace, monospace;
+  font-size: 82%;
+}
+
+tooltip,
+tooltip.background {
+  padding: 4px 10px;
+  border-radius: t.radius(sm);
+  border: none;
+  background-color: v.token(inverse-bg);
+  color: v.token(inverse-fg);
+  box-shadow: none;
+}
+
+tooltip > box > label {
+  font-weight: 500;
+}

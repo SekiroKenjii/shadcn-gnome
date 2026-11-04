@@ -1,0 +1,180 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+@mixin calendar-tile {
+  padding: 10px 12px;
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background-color: t.color(bg);
+  color: t.color(fg);
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  &:active {
+    background-color: t.color(active-sel);
+  }
+}
+
+.datemenu-popover {
+  @include m.surface(card, lg, 0 8px 24px);
+  padding: 12px;
+}
+
+#calendarArea {
+  padding: 0;
+  spacing: 12px;
+}
+
+.datemenu-calendar-column {
+  spacing: 8px;
+  border: none;
+  padding: 0;
+}
+
+.datemenu-today-button {
+  padding: 4px 6px;
+  border-radius: t.radius(md);
+  background-color: transparent;
+  border: none;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  .day-label {
+    font-size: t.pt(12px);
+    font-weight: normal;
+    color: t.color(muted-fg);
+  }
+
+  .date-label {
+    font-size: t.pt(17px);
+    font-weight: 600;
+  }
+}
+
+.calendar {
+  @include calendar-tile;
+  padding: 10px;
+
+  &:hover {
+    background-color: t.color(bg);
+  }
+}
+
+.calendar-month-header {
+  .pager-button {
+    width: 28px;
+    height: 28px;
+    border-radius: t.radius(sm);
+    background-color: t.color(secondary);
+    color: t.color(fg);
+
+    &:hover,
+    &:focus {
+      background-color: t.color(hover);
+    }
+  }
+}
+
+.calendar-month-label {
+  font-size: t.pt(13px);
+  font-weight: 600;
+  color: t.color(fg);
+  border-radius: t.radius(sm);
+  padding: 4px 8px;
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+}
+
+.calendar-day-heading {
+  font-size: t.pt(11px);
+  font-weight: 600;
+  color: t.color(muted-fg);
+  background-color: transparent;
+}
+
+.calendar-week-number {
+  font-size: t.pt(10px);
+  font-weight: 600;
+  color: t.color(muted-fg);
+  background-color: transparent;
+  border-radius: t.radius(sm);
+}
+
+.calendar-day {
+  width: 26px;
+  height: 26px;
+  font-size: t.pt(12px);
+  font-feature-settings: "tnum";
+  border-radius: t.radius(sm);
+  background-color: transparent;
+  color: t.color(fg);
+
+  &:hover,
+  &:focus {
+    background-color: t.color(hover);
+  }
+
+  &:active,
+  &:selected {
+    background-color: t.color(active-sel);
+    color: t.color(fg);
+  }
+
+  &.calendar-weekend {
+    color: t.color(fg);
+  }
+
+  &.calendar-other-month {
+    color: t.translucent(muted-fg, 0.55);
+  }
+
+  &.calendar-today,
+  &.calendar-today:hover,
+  &.calendar-today:focus,
+  &.calendar-today:selected,
+  &.calendar-today:active {
+    background-color: t.color(primary);
+    color: t.color(primary-fg);
+    font-weight: 600;
+  }
+
+  &.calendar-day-with-events {
+    font-weight: 600;
+  }
+}
+
+.events-button,
+.world-clocks-button,
+.weather-button {
+  @include calendar-tile;
+}
+
+.events-title,
+.world-clocks-header,
+.weather-header {
+  font-size: t.pt(12px);
+  font-weight: 600;
+  color: t.color(muted-fg);
+}
+
+.event-time,
+.world-clocks-timezone,
+.weather-forecast-time {
+  color: t.color(muted-fg);
+  font-feature-settings: "tnum";
+}
+
+.world-clocks-time,
+.weather-forecast-temp {
+  font-feature-settings: "tnum";
+}

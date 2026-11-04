@@ -1,0 +1,194 @@
+@use '../lib/tokens' as t;
+
+@define-color theme_bg_color #{t.literal(t.color(bg))};
+@define-color theme_fg_color #{t.literal(t.color(fg))};
+@define-color theme_base_color #{t.literal(t.color(card))};
+@define-color theme_text_color #{t.literal(t.color(fg))};
+@define-color theme_selected_bg_color #{t.literal(t.color(primary))};
+@define-color theme_selected_fg_color #{t.literal(t.color(primary-fg))};
+@define-color theme_unfocused_bg_color #{t.literal(t.color(bg))};
+@define-color theme_unfocused_fg_color #{t.literal(t.color(fg))};
+@define-color theme_unfocused_base_color #{t.literal(t.color(card))};
+@define-color theme_unfocused_text_color #{t.literal(t.color(fg))};
+@define-color theme_unfocused_selected_bg_color #{t.literal(t.color(accent))};
+@define-color theme_unfocused_selected_fg_color #{t.literal(t.color(fg))};
+@define-color insensitive_bg_color #{t.literal(t.color(bg))};
+@define-color insensitive_fg_color #{t.literal(t.color(muted-fg))};
+@define-color insensitive_base_color #{t.literal(t.color(card))};
+@define-color borders #{t.literal(t.color(border))};
+@define-color unfocused_borders #{t.literal(t.color(border))};
+@define-color content_view_bg #{t.literal(t.color(bg))};
+@define-color warning_color #{t.literal(t.color(warning))};
+@define-color error_color #{t.literal(t.color(destructive))};
+@define-color success_color #{t.literal(t.color(success))};
+
+headerbar,
+.titlebar {
+  background: t.color(headerbar);
+  color: t.color(fg);
+  border-bottom: 1px solid t.color(border);
+  box-shadow: none;
+}
+
+button {
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background: t.color(secondary);
+  color: t.color(fg);
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+button:hover {
+  background: t.color(hover);
+}
+
+button:active,
+button:checked {
+  background: t.color(active-sel);
+}
+
+button.flat,
+headerbar button:not(.suggested-action):not(.destructive-action) {
+  border-color: transparent;
+  background: transparent;
+}
+
+button.flat:hover,
+headerbar button:not(.suggested-action):not(.destructive-action):hover {
+  background: t.color(hover);
+}
+
+button.suggested-action {
+  background: t.color(primary);
+  border-color: t.color(primary);
+  color: t.color(primary-fg);
+}
+
+button.destructive-action {
+  background: t.color(destructive);
+  border-color: t.color(destructive);
+  color: t.color(destructive-fg);
+}
+
+entry {
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background: t.color(card);
+  color: t.color(fg);
+  box-shadow: none;
+}
+
+entry:focus {
+  border-color: t.color(ring);
+  box-shadow: 0 0 0 1px t.color(ring);
+}
+
+popover,
+menu,
+.menu,
+.context-menu {
+  border: 1px solid t.color(border);
+  border-radius: t.radius(lg);
+  background: t.color(popover);
+  color: t.color(fg);
+}
+
+menuitem:hover,
+.menuitem:hover {
+  background: t.color(hover);
+  color: t.color(fg);
+}
+
+switch {
+  border-radius: t.radius(full);
+  border: 1px solid t.color(border);
+  background: t.color(secondary);
+}
+
+switch:checked {
+  background: t.color(primary);
+  border-color: t.color(primary);
+}
+
+switch slider {
+  border-radius: t.radius(full);
+  background: t.color(fg);
+  border: none;
+  box-shadow: none;
+}
+
+switch:checked slider {
+  background: t.color(primary-fg);
+}
+
+check,
+radio {
+  border: 1px solid t.color(border);
+  background: t.color(card);
+  color: t.color(primary-fg);
+}
+
+check {
+  border-radius: t.radius(sm);
+}
+
+check:checked,
+radio:checked {
+  background: t.color(primary);
+  border-color: t.color(primary);
+}
+
+scale trough,
+progressbar trough {
+  border-radius: t.radius(full);
+  background: t.color(muted);
+  border: none;
+}
+
+scale highlight,
+progressbar progress {
+  border-radius: t.radius(full);
+  background: t.color(primary);
+  border: none;
+}
+
+scale slider {
+  border-radius: t.radius(full);
+  border: 1px solid t.color(primary);
+  background: t.color(bg);
+}
+
+.sidebar,
+placessidebar,
+stacksidebar {
+  background: t.color(sidebar);
+  border-color: t.color(border);
+}
+
+placessidebar row:selected,
+.sidebar row:selected,
+row:selected {
+  background: t.color(active-sel);
+  color: t.color(fg);
+}
+
+tooltip,
+tooltip.background {
+  border-radius: t.radius(sm);
+  background: t.color(inverse-bg);
+  color: t.color(inverse-fg);
+  border: none;
+  box-shadow: none;
+}
+
+tooltip * {
+  color: t.color(inverse-fg);
+}
+
+selection,
+*:selected {
+  background-color: t.color(accent);
+  color: t.color(fg);
+}

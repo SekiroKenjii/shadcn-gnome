@@ -1,0 +1,111 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+#lockDialogGroup {
+  background-color: t.color(bg);
+}
+
+.unlock-dialog {
+  background-color: transparent;
+  color: t.color(fg);
+
+  .login-dialog-prompt-entry {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: t.pt(16px);
+    @include m.text-entry;
+  }
+
+  .button,
+  .icon-button {
+    @include m.secondary-button(md);
+  }
+
+  .login-dialog-button.cancel-button,
+  .login-dialog-button.switch-user-button {
+    padding: 6px 14px;
+    font-size: t.pt(13px);
+    font-weight: 500;
+    @include m.secondary-button(md);
+  }
+}
+
+.unlock-dialog-clock {
+  color: t.color(fg);
+  spacing: 6px;
+
+  .unlock-dialog-clock-time {
+    font-size: t.pt(148px);
+    font-weight: 250;
+    font-feature-settings: "tnum";
+    letter-spacing: -6px;
+  }
+
+  .unlock-dialog-clock-date {
+    font-size: t.pt(20px);
+    font-weight: 500;
+  }
+
+  .unlock-dialog-clock-hint {
+    margin-top: 48px;
+    padding: 6px 12px;
+    font-size: t.pt(13px);
+    font-weight: normal;
+    color: t.color(muted-fg);
+    border-radius: t.radius(md);
+  }
+}
+
+.unlock-dialog-notifications-container {
+  width: 380px;
+  spacing: 8px;
+
+  .unlock-dialog-notification-source {
+    padding: 12px 14px;
+    border-radius: t.radius(lg);
+    border: 1px solid t.color(border);
+    background-color: t.color(card);
+    color: t.color(fg);
+
+    &.critical {
+      border-color: t.color(destructive);
+    }
+  }
+
+  .notification {
+    border-radius: t.radius(lg);
+    border: 1px solid t.color(border);
+    background-color: t.color(card);
+  }
+}
+
+.unlock-dialog-notification-icon {
+  icon-size: 16px;
+}
+
+.unlock-dialog-notification-count-text {
+  font-size: t.pt(11px);
+  font-weight: 600;
+  padding: 1px 7px;
+  border: 1px solid t.color(border);
+  border-radius: t.radius(full);
+  color: t.color(fg);
+}
+
+.caps-lock-warning-label,
+.login-dialog-message-hint {
+  color: t.color(muted-fg);
+  font-size: t.pt(12.5px);
+}
+
+.user-widget-label {
+  font-size: t.pt(20px);
+  font-weight: 600;
+  color: t.color(fg);
+}
+
+.user-widget.vertical .user-icon {
+  border: 1px solid t.color(border);
+  background-color: t.color(muted);
+  color: t.color(muted-fg);
+}

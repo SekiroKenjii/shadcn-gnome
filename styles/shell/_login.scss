@@ -1,0 +1,206 @@
+@use '../lib/tokens' as t;
+@use 'mixins' as m;
+
+.login-dialog {
+  background-color: transparent;
+  border: none;
+  color: t.color(fg);
+
+  .login-dialog-prompt-entry {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: t.pt(16px);
+    @include m.text-entry;
+  }
+
+  .login-dialog-button {
+    padding: 6px 16px;
+    font-size: t.pt(13.5px);
+    font-weight: 500;
+    @include m.secondary-button(md);
+  }
+
+  .login-dialog-button.default-button,
+  .login-dialog-button.a11y-button {
+    padding: 9px;
+  }
+
+  .login-dialog-button.default-button,
+  .login-button,
+  .web-login-prompt-button {
+    border-radius: t.radius(md);
+    @include m.primary-button(md);
+  }
+
+  .login-dialog-session-list-button {
+    padding: 9px;
+    background-color: t.color(active-sel);
+    border: 1px solid t.color(border);
+    border-radius: t.radius(md);
+    color: t.color(fg);
+
+    &:hover,
+    &:focus {
+      background-color: t.color(hover);
+    }
+  }
+}
+
+.login-dialog-banner,
+.login-dialog-message {
+  color: t.color(fg);
+}
+
+.login-dialog-message-warning {
+  color: t.color(destructive-tint);
+}
+
+.login-dialog-user-list {
+  spacing: 8px;
+}
+
+.login-dialog-user-list-item {
+  padding: 12px;
+  border-radius: t.radius(lg);
+  color: t.color(fg);
+
+  &:hover,
+  &:focus,
+  &:selected {
+    background-color: t.color(hover);
+    box-shadow: inset 0 0 0 1px t.color(border);
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px t.color(ring);
+  }
+
+  .user-icon {
+    border: 2px solid t.color(border);
+    background-color: t.color(muted);
+    color: t.color(muted-fg);
+  }
+}
+
+.login-dialog-not-listed-label {
+  color: t.color(muted-fg);
+  font-weight: 500;
+
+  &:hover {
+    color: t.color(fg);
+  }
+}
+
+.login-dialog-auth-menu-button {
+  padding: 6px 12px;
+  border-radius: t.radius(md);
+  border: 1px solid t.color(border);
+  background-color: t.color(muted);
+  color: t.color(fg);
+  font-size: t.pt(13px);
+  font-weight: 500;
+
+  &:hover,
+  &:focus,
+  &:checked {
+    background-color: t.color(bg);
+    box-shadow: inset 0 0 0 1px t.color(border);
+  }
+}
+
+.login-dialog-auth-menu-button-popup .popup-menu-content {
+  padding: 6px;
+}
+
+.login-dialog-auth-menu-item-section {
+  color: t.color(muted-fg);
+  font-size: t.pt(11.5px);
+  font-weight: 600;
+}
+
+.login-dialog-auth-menu-item-icon,
+.login-dialog-auth-menu-button-indicator-icon {
+  icon-size: 14px;
+}
+
+.login-dialog-auth-menu-button-indicator-description {
+  color: t.color(muted-fg);
+}
+
+.login-dialog-auth-list-item {
+  border-radius: t.radius(md);
+
+  &:hover,
+  &:focus,
+  &:selected {
+    background-color: t.color(hover);
+  }
+}
+
+.login-dialog-auth-list-title {
+  font-weight: 600;
+  color: t.color(muted-fg);
+}
+
+.web-login-prompt {
+  padding: 22px;
+  spacing: 14px;
+  border-radius: t.radius(xl);
+  border: 1px solid t.color(border);
+  background-color: t.color(card);
+}
+
+.web-login-title-label {
+  font-size: t.pt(15px);
+  font-weight: 600;
+  color: t.color(fg);
+}
+
+.web-login-url-label {
+  font-family: t.$font-monospace;
+  color: t.color(fg);
+  font-weight: 500;
+}
+
+.web-login-code-title-label {
+  font-size: t.pt(13px);
+  color: t.color(muted-fg);
+}
+
+.web-login-code-label {
+  font-family: t.$font-monospace;
+  font-size: t.pt(18px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 6px 10px;
+  border: 1px solid t.color(border);
+  border-radius: t.radius(sm);
+  background-color: t.color(bg);
+  color: t.color(fg);
+}
+
+.web-login-spinner {
+  background-color: transparent;
+  color: t.color(muted-fg);
+}
+
+.qr-code {
+  border-radius: t.radius(md);
+  border-width: 12px;
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.unlock-dialog .web-login-prompt,
+.unlock-dialog .web-login-title-label,
+.unlock-dialog .web-login-url-label,
+.unlock-dialog .web-login-code-title-label,
+.unlock-dialog .web-login-code-label {
+  color: t.color(fg);
+}
+
+.login-dialog-timed-login-indicator {
+  height: 2px;
+  background-color: t.color(fg);
+}

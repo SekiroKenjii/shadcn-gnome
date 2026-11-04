@@ -1,0 +1,82 @@
+@use '../lib/tokens' as t;
+@use '../lib/variables' as v;
+
+.boxed-list,
+.boxed-list-separate > row,
+list.boxed-list {
+  border-radius: t.radius(md);
+  border: 1px solid v.token(border);
+  background-color: v.token(card);
+  box-shadow: none;
+}
+
+.boxed-list > row:first-child {
+  border-top-left-radius: t.radius(md);
+  border-top-right-radius: t.radius(md);
+}
+
+.boxed-list > row:last-child {
+  border-bottom-left-radius: t.radius(md);
+  border-bottom-right-radius: t.radius(md);
+}
+
+.boxed-list > row {
+  min-height: 50px;
+}
+
+.boxed-list > row.activatable:hover {
+  background-color: v.token(hover);
+}
+
+.boxed-list > row:focus-visible {
+  outline-style: none;
+  box-shadow: inset 0 0 0 1px v.token(ring);
+}
+
+row.expander list.nested > row,
+row.expander list.nested {
+  background-color: v.token(bg);
+}
+
+row.entry:focus-within {
+  outline-style: none;
+  box-shadow: inset 0 0 0 1px v.token(ring);
+  background-color: v.token(bg);
+}
+
+row.button.activatable {
+  font-weight: 500;
+}
+
+row.button.destructive-action,
+row.button.destructive-action label {
+  color: v.token(destructive-tint);
+}
+
+row.activatable:selected,
+row.activatable:active,
+.view:selected,
+listview > row:selected,
+columnview > listview > row:selected,
+gridview > child:selected {
+  background-color: v.token(accent);
+  color: v.token(fg);
+}
+
+listview > row:hover:not(:selected),
+columnview > listview > row:hover:not(:selected) {
+  background-color: v.token(hover);
+}
+
+columnview > header {
+  border-bottom: 1px solid v.token(border);
+}
+
+selection,
+text > selection,
+textview text selection,
+entry > text > selection,
+label > selection {
+  background-color: v.token(accent);
+  color: v.token(fg);
+}
