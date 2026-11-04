@@ -1,0 +1,21 @@
+#cloud-config
+hostname: shadcn-gnome-vm
+users:
+  - name: shadcn
+    groups: [adm, sudo, wheel]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    plain_text_passwd: shadcn
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - @SSH_PUBLIC_KEY@
+ssh_pwauth: false
+package_update: true
+runcmd:
+  - [bash, -c, "@INSTALL_DESKTOP@"]
+  - [systemctl, set-default, graphical.target]
+  - [bash, -c, "systemctl enable gdm || systemctl enable gdm3"]
+power_state:
+  mode: poweroff
+  message: shadcn-gnome VM provisioned
+  timeout: 30
