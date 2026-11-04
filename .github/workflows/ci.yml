@@ -47,16 +47,19 @@ jobs:
     continue-on-error: true
     container:
       image: registry.fedoraproject.org/fedora:latest
+      # bubblewrap needs to create a mount namespace for the greeter preview
+      options: --privileged
     steps:
       - run: >
           dnf install -y --setopt=install_weak_deps=False
-          gnome-shell gjs dbus-daemon accountsservice bubblewrap glib2-devel librsvg2
+          gnome-shell gjs dbus-daemon accountsservice bubblewrap glib2-devel librsvg2 mesa-dri-drivers
           gsettings-desktop-schemas dconf gtk-update-icon-cache fontconfig nodejs npm git
       - uses: actions/checkout@v4
       - run: npm ci
       - run: dev/headless/capture.sh --theme graphite --scheme both
       - run: dev/gdm-preview.sh --theme graphite --shot build/screens/graphite/greeter-dark.png
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: screens
           path: build/screens/

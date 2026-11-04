@@ -40,14 +40,26 @@ fi
 
 shots="$REPO_ROOT/build/screens/$theme"
 mkdir -p "$shots"
+failed=()
 for scheme in "${schemes[@]}"; do
   sandbox="$(mktemp -d)"
   runtime="$(mktemp -d)"
   chmod 700 "$runtime"
-  env -i PATH="$PATH" HOME="$sandbox" XDG_RUNTIME_DIR="$runtime" LANG="${LANG:-C.UTF-8}" \
+  session_log="$shots/$scheme-session.log"
+  if env -i PATH="$PATH" HOME="$sandbox" XDG_RUNTIME_DIR="$runtime" LANG="${LANG:-C.UTF-8}" \
     REPO_ROOT="$REPO_ROOT" SHOTS_DIR="$shots" SCHEME="$scheme" SCENES="$scenes" \
     INSTALL_FLAGS="--theme $theme ${install_args[*]}" \
-    dbus-run-session -- "$REPO_ROOT/dev/headless/session.sh" 2>&1 | grep -v '^dbus-daemon' || true
+    dbus-run-session -- "$REPO_ROOT/dev/headless/session.sh" > "$session_log" 2>&1; then
+    grep '^captured' "$session_log" || true
+  else
+    failed+=("$scheme")
+    echo "$scheme capture failed; session output:" >&2
+    grep -v '^dbus-daemon' "$session_log" | tail -n 60 >&2
+  fi
   rm -rf "$sandbox" "$runtime"
 done
 echo "screens in ${shots#"$REPO_ROOT"/}"
+if [ "${#failed[@]}" -gt 0 ]; then
+  echo "capture failed for: ${failed[*]}" >&2
+  exit 1
+fi

@@ -9,7 +9,7 @@ RUN dnf install -y --setopt=install_weak_deps=False \
       gtk4-devel-tools gtk3-devel libadwaita-demos \
       nautilus gnome-control-center ptyxis gnome-text-editor \
       gsettings-desktop-schemas dconf glib2-devel gtk-update-icon-cache \
-      librsvg2 fontconfig xdg-user-dirs \
+      librsvg2 mesa-dri-drivers fontconfig xdg-user-dirs \
       nodejs npm ShellCheck git \
     && dnf clean all
 

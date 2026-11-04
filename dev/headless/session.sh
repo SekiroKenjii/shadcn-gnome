@@ -5,6 +5,7 @@ set -euo pipefail
 
 : "${REPO_ROOT:?}" "${SHOTS_DIR:?}" "${SCHEME:?}" "${SCENES:?}" "${INSTALL_FLAGS:?}"
 readonly DEVKIT_UUID=devkit@shadcn-gnome.dev
+readonly SHELL_LOG="$SHOTS_DIR/$SCHEME-gnome-shell.log"
 readonly THEME_UUID=shadcn-gnome@sekirokenjii.github.io
 
 shell_eval() {
@@ -23,12 +24,13 @@ wait_for_shell() {
     [[ "$(shell_eval 'typeof shadcnDevkit' 2>/dev/null || true)" == *object* ]] && return 0
     sleep 0.5
   done
-  echo "GNOME Shell did not come up; see $SHOTS_DIR/gnome-shell.log" >&2
+  echo "GNOME Shell did not come up; last lines of $SHELL_LOG:" >&2
+  tail -n 40 "$SHELL_LOG" >&2
   return 1
 }
 
 read -r -a install_flags <<< "$INSTALL_FLAGS"
-"$REPO_ROOT/install.sh" "${install_flags[@]}" --scheme "$SCHEME" > "$SHOTS_DIR/install.log" 2>&1
+"$REPO_ROOT/install.sh" "${install_flags[@]}" --scheme "$SCHEME" > "$SHOTS_DIR/$SCHEME-install.log" 2>&1
 
 mkdir -p "$HOME/.local/share/gnome-shell/extensions"
 cp -r "$REPO_ROOT/dev/headless/$DEVKIT_UUID" "$HOME/.local/share/gnome-shell/extensions/"
@@ -37,7 +39,7 @@ gsettings set org.gnome.shell disable-extension-version-validation true
 gsettings set org.gnome.shell welcome-dialog-last-shown-version '999'
 gsettings set org.gnome.desktop.notifications show-banners true
 
-gnome-shell --headless --wayland --no-x11 --virtual-monitor "${RESOLUTION:-1440x900}" > "$SHOTS_DIR/gnome-shell.log" 2>&1 &
+gnome-shell --headless --wayland --no-x11 --virtual-monitor "${RESOLUTION:-1440x900}" > "$SHELL_LOG" 2>&1 &
 shell_pid=$!
 trap 'kill "$shell_pid" 2>/dev/null || true; wait "$shell_pid" 2>/dev/null || true' EXIT
 wait_for_shell
