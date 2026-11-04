@@ -1,184 +1,99 @@
 # shadcn-gnome
 
-**shadcn-style desktop themes for GNOME**: three neutral shadcn palettes
-(**Graphite**, **Mono**, **Vercel**), a **complete Lucide icon set** (~1660
-names), the **Geist** typeface, and a matching **Ptyxis** terminal palette.
+**A shadcn-style desktop for GNOME**: three neutral palettes (**Graphite**,
+**Mono**, **Vercel**), each in a **dark and a light scheme**, applied to GTK4 /
+libadwaita, GTK3, GNOME Shell and the **GDM login screen**, with a complete
+**Lucide icon theme**, an **SVG cursor theme**, wallpapers, the **Geist**
+typeface and matching Ptyxis and Firefox palettes.
 
-One command themes GTK4/libadwaita + GTK3 apps and the GNOME Shell (panel, quick
-settings, calendar, notifications). Icons, terminal, and font are opt-in flags.
-
-Thin 1px borders, per-theme corner radius, monochrome Lucide line icons: the
-shadcn look, on the desktop. Dark-first.
+Thin 1px borders, per-theme corner radius, monochrome line icons, a neutral
+accent. Dark-first, light-ready: everything follows GNOME's Dark Style switch.
 
 ## Requirements
 
-- **GNOME 50+** on **Debian / Ubuntu** or **Fedora**.
-- The installer **auto-resolves dependencies** (`node`, `npm`, `gsettings`,
-  `dconf`, and, for the optional surfaces, `fontconfig`,
-  `gtk-update-icon-cache`) via `apt`/`dnf`. The GNOME Shell theme uses the
-  **User Themes** extension (installed/enabled automatically when possible).
+- **GNOME 47+** (designed for GNOME 51) on **Debian / Ubuntu** or **Fedora**.
+- `node` ≥ 18 and `npm` to build; the installer installs what is missing
+  (`gsettings`, `dconf`, `fontconfig`, `gtk-update-icon-cache`, and the glib
+  tools for `--gdm`) through `apt` or `dnf`.
 
 ## Install
 
 ```sh
-./install.sh                       # Graphite theme (GTK + Shell) only
-./install.sh -t vercel -i -f       # Vercel theme + Lucide icons + Geist font
-./install.sh --theme mono --icon --terminal --font --gdm   # everything, Mono
+./install.sh                              # Graphite: GTK + GNOME Shell
+./install.sh -t vercel --all              # + icons, cursors, fonts, wallpaper, terminal
+./install.sh -t mono --scheme light --all --gdm --firefox
 ```
 
 | Flag | | What it does |
-| ---- | --- | --- |
-| `-t`, `--theme <name>` | | `graphite` (default), `mono`, or `vercel` |
-| `-i`, `--icon` | opt-in | generate + apply the Lucide icon set for the theme |
-| `--terminal` | opt-in | install + apply the Ptyxis terminal palette |
-| `-f`, `--font` | opt-in | install + apply the Geist font |
-| `--gdm` | opt-in | theme the GDM **login screen** (needs `sudo`; fully reversible) |
-| `--patch-vitals` | opt-in | recolour the Vitals extension's bundled icons to match |
-| `--firefox` | opt-in | apply the theme to the Firefox browser chrome |
+| --- | --- | --- |
+| `-t`, `--theme NAME` | | `graphite` (default), `mono`, `vercel`, or any file in `themes/` |
+| `-s`, `--scheme SCHEME` | | `dark` (default) or `light`: the starting color scheme |
+| `--dark-panel` | | keep the top bar dark in the light scheme |
+| `-a`, `--all` | opt-in | icons, cursors, fonts, wallpaper and terminal |
+| `-i`, `--icon` | opt-in | Lucide icon theme (`Lucide` / `Lucide-Light`) |
+| `-c`, `--cursor[=dark]` | opt-in | SVG cursor theme `Shadcn` (light fill) or `Shadcn-Dark` |
+| `-f`, `--font` | opt-in | Geist UI font and Geist Mono |
+| `-w`, `--wallpaper` | opt-in | theme wallpaper, light and dark |
+| `--terminal` | opt-in | Ptyxis palette |
+| `--firefox` | opt-in | Firefox chrome following the system scheme |
+| `--patch-vitals` | opt-in | recolor the Vitals extension's own icons |
+| `--gdm` | opt-in | login screen (sudo, fully reversible); also uses the selected cursors, icons and font |
 
-The theme itself (GTK4/GTK3 + GNOME Shell) is **always** applied; the three
-opt-in flags add the icon set, terminal palette, and font only when passed.
+GTK and the GNOME Shell theme are always installed. **Log out and back in
+once** so GNOME Shell loads the theme extension; after that the Dark Style
+toggle switches Shell, GTK apps and icons together.
 
-Then **log out and back in** for the Shell theme and icon theme to apply
-everywhere (GTK apps and the terminal update on their next launch).
-
-`./uninstall.sh` reverts every setting and removes all installed files
-(any `Shadcn-*` Shell theme, the Lucide icons, Geist fonts, GTK css, and the
-Ptyxis palettes), restores the Vitals icons, and drops the `.desktop` overrides.
+`./uninstall.sh` removes every installed file, reverts the login screen, and
+restores each setting it changed to **your previous value**.
 
 ## Themes
 
-| Theme | Radius | Look |
-| ----- | ------ | ---- |
-| **Graphite** (default) | 6px | neutral graphite grays, the classic shadcn desktop |
-| **Mono** | 0px | pure neutral monochrome, sharp corners |
-| **Vercel** | 8px | pure black canvas, white primary, the Geist look |
+| Theme | Radius | Wallpaper | Look |
+| --- | --- | --- | --- |
+| **Graphite** (default) | 6px | dot grid | neutral graphite greys, the classic shadcn desktop |
+| **Mono** | 0px | line grid | pure monochrome, square corners, mitered cursors |
+| **Vercel** | 8px | spotlight grid | pure black (or white) canvas, the Geist look |
 
-All three are dark-first and monochrome; the accent is left neutral so no
-Settings hue leaks through.
+Every color pair the design checks (text on window, captions on cards, primary
+labels, selected rows, panel text) passes WCAG AA in both schemes:
+`npm run contrast -- -t <theme>`.
 
-## What it does
+## What it installs
 
-| Surface | How |
-| ------- | --- |
-| GTK4 / libadwaita | `~/.config/gtk-4.0/gtk.css`: shadcn named colors + outlined widgets |
-| GTK3 | `~/.config/gtk-3.0/gtk.css` |
-| GNOME Shell | `~/.themes/Shadcn-NAME/` (a base dark theme + a neutral override) via User Themes |
-| Icons *(`-i`)* | `~/.local/share/icons/Lucide`, a freedesktop theme covering ~1660 names |
-| Terminal *(`--terminal`)* | a "Shadcn NAME" Ptyxis palette |
-| Font *(`-f`)* | Geist Sans (UI) + Geist Mono, to `~/.local/share/fonts` |
-| GDM login *(`--gdm`)* | rebuilds the GNOME Shell theme gresource with the palette (see safety notes) |
-| Vitals *(`--patch-vitals`)* | recolours the Vitals extension's own bundled icons to Lucide |
-| Firefox *(`--firefox`)* | `userChrome.css` + `userContent.css` + a `user.js` block, per profile |
+| Surface | Where | How |
+| --- | --- | --- |
+| GTK4 / libadwaita | `~/.config/gtk-4.0/gtk.css` | one stylesheet, `@media (prefers-color-scheme)`, outlined widgets |
+| GTK3 | `~/.config/gtk-3.0/gtk.css` | the scheme chosen at install |
+| GNOME Shell | `~/.local/share/gnome-shell/extensions/shadcn-gnome@sekirokenjii.github.io` | companion extension: loads the light or dark stylesheet, keeps the lock screen themed |
+| Login screen *(`--gdm`)* | GNOME Shell theme gresource + `/etc/dconf/db/gdm.d/07-shadcn-gnome` | validated before it goes live; reversible |
+| Icons *(`-i`)* | `~/.local/share/icons/Lucide`, `Lucide-Light` | ~1660 freedesktop names, recognizable app marks, distinctive folders |
+| Cursors *(`-c`)* | `~/.local/share/icons/Shadcn`, `Shadcn-Dark` | SVG `cursors_scalable` + Xcursor 24/32/48/64, full CSS and X11 name set |
+| Wallpaper *(`-w`)* | `~/.local/share/backgrounds/shadcn-gnome` | SVG, light and dark |
+| Fonts *(`-f`)* | `~/.local/share/fonts/geist` | Geist 11 for UI, Geist Mono 11 for code |
+| Terminal *(`--terminal`)* | Ptyxis palettes | `[Dark]` and `[Light]` |
+| Firefox *(`--firefox`)* | each profile's `chrome/` and `user.js` | follows the system scheme |
 
-### GDM login screen (`--gdm`): how it stays safe
+## Customize
 
-Theming GDM means changing a **system** file that the login screen reads, so a
-mistake could stop graphical login. This is handled by `lib/gdm-theme-setup.sh`
-(run via `sudo`) with several guards:
+- **Colors**: edit `themes/<name>.json` (validated by `themes/schema.json`)
+  and re-run `./install.sh -t <name>`.
+- **A new theme**: copy a theme file, change `id`, `label` and the tokens.
+- **Icons**: `assets/icons/overrides.json` (app brands, folders, remaps) or an
+  SVG in `assets/icons/custom/`.
+- **Widget shapes**: SCSS partials in `styles/`.
 
-- The new gresource is **built and validated in a tempdir** (resource count must
-  match the original and our marker must be present); the live file is swapped
-  **only after validation passes**; on any error it aborts and changes nothing.
-- On **Debian/Ubuntu**, GDM's theme is managed by `update-alternatives`, so we
-  register ours as a high-priority alternative. Removing it makes the OS
-  **auto-revert** to the distro theme. Inherently reversible.
-- On **Fedora/other**, the stock `gnome-shell-theme.gresource` is **backed up
-  once** before replacing; uninstall restores it.
-- We **never restart GDM**, and the GDM dconf profile is only ever **added to**,
-  never replaced (replacing it drops the greeter's session-name and breaks
-  login, a known failure mode).
-
-The greeter also gets one dconf key, `accent-color='slate'`, written to
-`/etc/dconf/db/gdm.d/07-shadcn-accent`. Distro themes derive their focus rings
-from the system accent with selectors too specific to override in CSS, so the
-password field, user tile, and shutdown dialog keep the distro accent unless it
-is neutralised at the source. The keyfile is separate and clearly named, so any
-other tool's greeter settings are left alone, and uninstall removes only ours.
-
-The change appears on the **next** lock/login screen. To revert:
-`./uninstall.sh`, or directly `sudo update-alternatives --remove gdm-theme.gresource <path>`
-(Debian/Ubuntu) / `sudo ./lib/gdm-theme-setup.sh uninstall` (Fedora).
-
-## Project layout: everything static is a resource
-
-No colors, icon mappings, fonts, or app tables are hardcoded in the scripts.
-To customize, edit the files under `themes/` and `assets/`; the build scripts
-never need touching.
-
-```text
-themes/                 # ← the palettes. One JSON per theme = every color it uses.
-  graphite.json         #   (colors + terminal ANSI + radius + icon fg + font)
-  mono.json
-  vercel.json
-assets/                 # ← all other static resources
-  fonts/                #   Geist / Geist Mono variable TTFs
-  custom-icons/         #   hand-drawn Lucide-style marks for brand-less apps
-  mapping.json          #   ~1660 freedesktop-name → Lucide-name mappings
-  icon-overrides.json   #   brand/app/folder/vitals/desktop icon tables
-lib/                    # build logic (parametrized by theme; imports config.mjs)
-  config.mjs            #   single source of truth for paths + theme loading
-  build-theme.mjs       #   themes/<name>.json → build/<name>/{gtk,shell,ptyxis,gdm}
-  generate-icons.mjs    #   mapping.json + Lucide → build/<name>/Lucide
-  gdm-theme-setup.sh    #   root helper: safely (un)theme the GDM login screen
-  overlay-icons.mjs · lib-outline.mjs · patch-vitals.mjs
-scripts/                # helpers (patch-desktop-icons.sh, dev pipeline)
-install.sh · uninstall.sh
-build/                  # generated output (gitignored)
-```
-
-### Change a color
-
-Edit the hex value in `themes/<name>.json` and re-run
-`./install.sh -t <name>` (add `-i`/`--terminal`/`-f` to refresh those too).
-
-### Add a new theme
-
-Drop a `themes/mytheme.json` (copy an existing one; the tweakcn/shadcn presets
-are OKLCH, convert to hex) and run `./install.sh -t mytheme`.
-
-### Update an app / folder / brand icon
-
-Edit `assets/icon-overrides.json` (or add an SVG to `assets/custom-icons/`) and
-re-run with `-i`.
-
-## The Lucide icon theme
-
-GNOME symbolic icons are recolored by GTK by **forcing `fill`** on every shape.
-Lucide icons are *stroke* based (`fill:none; stroke:currentColor`), so a naive
-copy renders as solid blobs. The build therefore emits two variants per name:
-
-- **`name-symbolic.svg`**: the Lucide stroke is converted to a *fill-only*
-  outline (the centerline is sampled as dense overlapping filled dots, giving
-  round caps/joins for free). GTK's fill-recoloring then renders clean lines.
-  See `lib/lib-outline.mjs`.
-- **`name.svg`**: the original Lucide stroke, baked to the theme foreground,
-  for non-symbolic requests (app grid, large file icons).
-
-**App icons keep their identity** (`lib/overlay-icons.mjs`): popular apps
-(Firefox, VS Code, Chrome, Discord, Telegram, Spotify, Docker, …) are drawn from
-**Tabler Icons**' `brand-*` set, the same outline language as Lucide, so each
-app stays recognizable *in* the line style. Apps with no brand keep their own
-icon; a few brand-less ones use hand-drawn marks in `assets/custom-icons/`.
-
-**Folders are distinctive**: the XDG/special folders get a Lucide folder
-*variant* or a **folder composed with a small glyph emblem** (via `composeFolder`).
-
-## Regenerating / customizing
+## For developers
 
 ```sh
-npm install
-node lib/build-theme.mjs vercel        # re-emit gtk/shell/ptyxis for a theme
-node lib/generate-icons.mjs vercel     # re-emit the icon theme
+npm ci && npm test && npm run build
+dev/sandbox.sh -t graphite             # GNOME Shell in a window, theme installed in a throwaway HOME
+dev/headless/capture.sh -t vercel      # screenshots of every Shell surface, both schemes
+dev/gdm-preview.sh --scheme light      # the themed login screen, no root needed
 ```
 
-To rebuild `assets/mapping.json` from scratch (needs the icon-mapping workflow):
-
-```sh
-node scripts/enumerate-icons.mjs && node scripts/prepass-icons.mjs
-# run the mapping agents, then:
-REBUILD_MAPPING=1 node lib/generate-icons.mjs
-```
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): layout, build pipeline, Shell and GDM delivery.
+- [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md): toolbox, sandbox, headless capture, GDM preview and VM.
+- [docs/REFACTOR-PLAN.md](docs/REFACTOR-PLAN.md): the v2 refactor plan and its verification status.
 
 ## Disclaimer
 
@@ -190,34 +105,33 @@ use. See [LICENSE](LICENSE) for the full terms.
 Read this before running the installer:
 
 - **It changes your desktop configuration.** The installer writes to
-  `~/.config/gtk-3.0` and `~/.config/gtk-4.0`, `~/.themes`, `~/.local/share/icons`,
-  `~/.local/share/fonts`, and changes GNOME settings through `gsettings` and
-  `dconf`. If you already keep a `gtk.css` (a dotfiles or stow setup, for
-  example), **back it up first**: installing overwrites that file, and
-  uninstalling deletes it.
+  `~/.config/gtk-3.0` and `~/.config/gtk-4.0`, `~/.local/share` (icons, cursors,
+  fonts, backgrounds, a Shell extension), and changes GNOME settings through `gsettings` and
+  `dconf`. An existing `gtk.css` you wrote yourself is kept as
+  `gtk.css.shadcn-backup` and put back by uninstall, but a dotfiles or stow
+  setup is still worth backing up first.
 - **`--gdm` needs root and touches system files.** It rebuilds the GNOME Shell
   theme gresource that the login screen reads, and adds one dconf keyfile for
   the greeter. It is written defensively (build and validate in a tempdir, swap
   only on success, `update-alternatives` where available, backup elsewhere,
   never replace the dconf profile), but **a broken greeter can leave you unable
   to log in graphically**. Before using it the first time, know how to reach a
-  TTY (`Ctrl+Alt+F3`) and run `./uninstall.sh` from there. Skip this flag if you
-  are not comfortable with that.
+  TTY (`Ctrl+Alt+F3`) and run `./uninstall.sh` from there. Try it in the VM from
+  `dev/vm/` first if you are not comfortable with that.
 - **`--firefox` writes into your Firefox profiles.** An existing
-  `userChrome.css` is backed up once as `userChrome.css.shadcn-bak`, and the
+  `userChrome.css` is backed up once as `userChrome.css.shadcn-backup`, and the
   prefs go into a marked block in `user.js`. Firefox chrome CSS is unofficial
   and can break after a Firefox update; if the browser looks wrong after an
   upgrade, remove the two files under `chrome/` in your profile.
 - **`--patch-vitals` edits an extension's files in place.** The originals are
   backed up inside the extension folder and restored on uninstall, but updating
   the extension replaces them anyway; just re-run the flag afterwards.
-- **Theme rendering depends on your GNOME version and distro.** The result is
-  tested on GNOME 50 on Ubuntu. Other versions may shift selectors, so parts of
-  the theme can look different or not apply at all.
+- **Theme rendering depends on your GNOME version and distro.** The theme
+  targets GNOME 47–51 (light/dark switching needs 47+). Other versions may shift
+  selectors, so parts of the theme can look different or not apply at all.
 
-`./uninstall.sh` reverses everything this project installs. It cannot restore
-files that existed before and were overwritten, which is why the backup note
-above matters.
+`./uninstall.sh` reverses everything this project installs and restores the
+settings it changed to the values you had before.
 
 ## Credits & licenses
 
@@ -225,6 +139,7 @@ above matters.
   [tweakcn](https://tweakcn.com) / shadcn.
 - Icons: [Lucide](https://lucide.dev) (ISC) + [Tabler Icons](https://tabler.io/icons) (MIT).
 - Font: [Geist](https://vercel.com/font) (OFL).
+- Cursors: drawn for this project from Lucide glyphs (ISC).
 - This project's own code: MIT.
 
 This project is not affiliated with, endorsed by, or sponsored by GNOME,
